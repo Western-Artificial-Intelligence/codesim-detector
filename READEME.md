@@ -64,6 +64,14 @@ Document experiments so others can replicate.
 
 ---
 
+**Naming Convention**
+
+Use snake case for file names.
+
+Camel case for everything else (variables, classes, etc).
+
+---
+
 **Acceptance Criteria**
 
 ≥ 85% accuracy on held-out test pairs (plagiarised and non-plagiarised pairs)
