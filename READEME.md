@@ -9,7 +9,7 @@ This project builds a multilayered AI system that catches plagiarism at differen
 - Output similarity → Compare program/snippet outputs across test cases
 - Ensemble layer → Combine all three above into one classifier  
 
-Final product: a simple demo UI where a user can upload/paste two Python files and receive a plagiarism risk score + breakdown.
+Final product: a program where a user can upload/paste two Python files and receive a plagiarism risk score + breakdown.
 
 ---
 
