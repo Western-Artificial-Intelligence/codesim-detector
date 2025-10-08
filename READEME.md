@@ -94,7 +94,7 @@ code_plagiarism_detector/
 │   ├── output_check.py     # output similarity (sandboxed execution)
 │   ├── ensemble.py         # combines token, semantic, output scores
 │   └── utils/              # helper functions
-├── ui/                # Streamlit demo app
+├── ui/                # Front End
 ├── tests/             # unit + integration tests
 ├── docs/              # documentation, experiment logs
 ├── requirements.txt   # project dependencies
