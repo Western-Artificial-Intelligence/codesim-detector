@@ -5,11 +5,11 @@ import pandas as pd
 import numpy as np
 import json
 import ast
-from typing import Any
-from concurrent.futures import ProcessPoolExecutor
-from difflib import SequenceMatcher
 import math
-import functools
+import time
+from typing import Any
+from difflib import SequenceMatcher
+from tqdm import tqdm
 
 # Inputs
 inputs = [
@@ -195,8 +195,7 @@ def compare(raw1: bytes, text1: str, raw2: bytes, text2: str) -> float:
         return 0
 
 # Compile and run the cpp program pair
-def run (job: tuple, tmpdir) -> list:
-    fName1, fName2, code1, code2, sim = job
+def run (fName1: str, fName2: str, code1: str, code2: str, tmpdir) -> list:
 
     try:
         # --- Write C++ file ---
@@ -230,9 +229,9 @@ def run (job: tuple, tmpdir) -> list:
 
         # Compilation failed
         if compile_proc1.returncode != 0 and compile_proc2.returncode !=0:
-            return {"output": 1, "sim": sim} 
+            return 1
         elif (compile_proc1.returncode != 0 and compile_proc2.returncode == 0) or ( compile_proc2.returncode != 0 and compile_proc1.returncode == 0):
-            return {"output": 0, "sim": sim} 
+            return 0
 
         outputs = 0
         # --- Run with series of inputs--- 
@@ -281,57 +280,45 @@ def run (job: tuple, tmpdir) -> list:
                 text2 = None
             
             outputs += compare(raw1, text1, raw2, text2)
-            
-        # FIle cleanup
-        os.remove(fName1)
-        os.remove(fName2)
-        os.remove(exe1)
-        os.remove(exe2)
 
         score = round((outputs / len(inputs)), 2)
-        return {"output": score, "sim": sim}
+        return score
 
     except Exception as err:
         print(f"Error in file running {err}")
-        return {"output": 0, "sim": sim}
+        return 0
 
-# Process jobs with multithread.
-def process(df: pd.DataFrame, results: np.array, tmpdir) -> None:
-        jobs = []
-        # Create job with items
-        for index, row in df.iterrows():
-            jobs.append(
-                (
-                    os.path.join(tmpdir,f"prog_{index}.1.cpp"), 
-                    os.path.join(tmpdir, f"prog_{index}.2.cpp"), 
-                    row["code1"], 
-                    row["code2"], 
-                    row["similar"]
-                )
-            )
-        
-        error = 0
-        numThreads = 4
-        # Run multiple at once
-        with ProcessPoolExecutor(max_workers=numThreads) as pool:
-            run_with_tmpdir = functools.partial(run, tmpdir=tmpdir)
-            for output in pool.map(run_with_tmpdir, jobs):
-                results.append([output["output"], output["sim"]])
-                error += abs(output["sim"] - output["output"])
-        print(f"Batch Error: {error / 50}")
+# Process each code pair in a pandas dataframe
+def process(df: pd.DataFrame) -> pd.DataFrame:
+    n = len(df)
+
+    if n == 0:
+        df["output_similarity"] = []
+        return df
+
+    results = np.zeros(n, dtype=float)
+
+    # Run files in a sandboxed environment
+    with tempfile.TemporaryDirectory() as tmpdir:  
+        for i in tqdm(range(0, n), desc="output similarity"):
+            fName1 = os.path.join(tmpdir, f"prog_1.cpp")
+            fName2 = os.path.join(tmpdir, f"prog_2.cpp")
+            code1 = df['code1'].iloc[i]
+            code2 =   df['code2'].iloc[i]
+
+            outputSim = run (fName1, fName2, code1, code2, tmpdir)
+            results[i] = outputSim
+
+    df["output_similarity"] = results
+    return df
 
 # Main
 if __name__ == "__main__":
-    # Read csv 
-    batchSize = 50
-    csvFile = "csv_data/sample_train.csv"
+    # Read from parquet
+    parquetFile = "data/train.parquet"
+    df = pd.read_parquet(parquetFile)
     
-    results = []
-
-    # Process in batches
-    with tempfile.TemporaryDirectory() as tmpdir:
-        for batch in pd.read_csv(csvFile, chunksize=batchSize, usecols=["code1", "code2", "similar"]):
-            process(batch, results, tmpdir)
-
-            results = np.array(results)
-            results = []
+    startTime = time.time()
+    df_processed = process(df.head(50))
+    print(df_processed.head(20))
+    print("Time taken", time.time() - startTime)
