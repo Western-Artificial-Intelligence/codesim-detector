@@ -258,7 +258,7 @@ def process_training_data(df, pair_batch_size: int = 128, embed_batch_size: int 
 if __name__ == "__main__":
     # Load training data from Parquet instead of CSV
     # Expected path: ../data/sample_train.parquet
-    df = pd.read_parquet("../data/train.parquet")
+    df = pd.read_parquet("data/train.parquet")
     s_time = time.time()
     df_processed = process_training_data(df.head(100), pair_batch_size=128, embed_batch_size=32)
     print(df_processed.head(20))
