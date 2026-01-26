@@ -1,0 +1,2763 @@
+code1,code2,similar
+"#include <bits/stdc++.h>
+using namespace std;
+long long fact(long long n){ return (n<=1)?1:n*fact(n-1); }
+int main(){ long long n; if(!(cin>>n)) return 0; cout<<fact(n)<<""
+""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; if(!(cin>>n)) return 0; long long f=1; for(long long i=2;i<=n;i++) f*=i; cout<<f<<""
+""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; if(!(cin>>n)) return 0; cout<< n*(n+1)/2 <<""
+""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; if(!(cin>>n)) return 0; long long s=0; for(long long i=1;i<=n;i++) s+=i; cout<<s<<""
+""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long a,b; if(!(cin>>a>>b)) return 0; cout<<std::gcd(a,b)<<""
+""; }","#include <bits/stdc++.h>
+using namespace std;
+long long gcdll(long long a,long long b){ while(b){ long long r=a%b; a=b; b=r; } return a; }
+int main(){ long long a,b; if(!(cin>>a>>b)) return 0; cout<<gcdll(a,b)<<""
+""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n,t; cin>>n>>t; vector<int>a(n); for(int&i:a)cin>>i; unordered_set<int> seen;
+for(int x:a){ if(seen.count(t-x)){ cout<<""Yes
+""; return 0;} seen.insert(x);} cout<<""No
+""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n,t; cin>>n>>t; vector<int>a(n); for(int&i:a)cin>>i; sort(a.begin(),a.end()); int i=0,j=n-1;
+while(i<j){ long long s=1LL*a[i]+a[j]; if(s==t){ cout<<""Yes
+""; return 0;} (s<t)?++i:--j;} cout<<""No
+""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!(cin>>s)) return 0; string t=s; reverse(t.begin(),t.end()); cout<<(t==s?""Yes"":""No"")<<""
+""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!(cin>>s)) return 0; int i=0,j=(int)s.size()-1; while(i<j){ if(s[i++]!=s[j--]) { cout<<""No
+""; return 0; } } cout<<""Yes
+""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string a,b; getline(cin,a); getline(cin,b);
+auto norm=[](string x){ string t; for(char c:x) if(isalpha((unsigned char)c)) t.push_back(tolower(c)); sort(t.begin(),t.end()); return t; };
+cout<< (norm(a)==norm(b)?""Yes"":""No"") <<""
+""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string a,b; getline(cin,a); getline(cin,b); int cnt[256]={0};
+for(char c:a) if(isalpha((unsigned char)c)) cnt[(unsigned char)tolower(c)]++;
+for(char c:b) if(isalpha((unsigned char)c)) cnt[(unsigned char)tolower(c)]--;
+for(int i=0;i<256;i++) if(cnt[i]){ cout<<""No
+""; return 0; } cout<<""Yes
+""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; unordered_set<int>s; for(int i=0,x;i<n;i++){cin>>x;s.insert(x);} cout<<s.size()<<""
+""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; sort(a.begin(),a.end()); a.erase(unique(a.begin(),a.end()),a.end()); cout<<a.size()<<""
+""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+pair<long long,long long> fib(long long n){ if(n==0) return {0,1}; auto p=fib(n>>1);
+long long a=p.first*(2*p.second-p.first), b=p.first*p.first+p.second*p.second;
+return (n&1)? make_pair(b,a+b): make_pair(a,b); }
+int main(){ long long n; cin>>n; cout<<fib(n).first<<""
+""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; cin>>n; long long a=0,b=1; for(long long i=0;i<n;i++){ long long c=a+b; a=b; b=c; } cout<<a<<""
+""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+long long fpow(long long a,long long e){ long long r=1; while(e){ if(e&1) r*=a; a*=a; e>>=1; } return r; }
+int main(){ long long a,e; cin>>a>>e; cout<<fpow(a,e)<<""
+""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long a,e; cin>>a>>e; long long r=1; for(long long i=0;i<e;i++) r*=a; cout<<r<<""
+""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s,t; cin>>s>>t; cout<< (s.size()==t.size() && (s+s).find(t)!=string::npos ? ""Yes"":""No"") <<""
+""; }","#include <bits/stdc++.h>
+using namespace std;
+bool isRot(string s,string t){
+  if(s.size()!=t.size()) return false;
+  for(size_t k=0;k<s.size();++k){
+    bool ok=true;
+    for(size_t i=0;i<s.size();++i) if(s[(i+k)%s.size()]!=t[i]){ ok=false; break; }
+    if(ok) return true;
+  } return false;
+}
+int main(){ string s,t; cin>>s>>t; cout<<(isRot(s,t)?""Yes"":""No"")<<""
+""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; stable_sort(a.begin(),a.end()); for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<a[i]; } cout<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; multiset<int> s; for(int i=0,x;i<n;i++){cin>>x; s.insert(x);} bool f=true; for(int x:s){ if(!f) cout<<"" ""; f=false; cout<<x; } cout<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; cout<<(equal(s.begin(),s.begin()+s.size()/2, s.rbegin())?""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; int i=0,j=(int)s.size()-1; while(i<j && s[i]==s[j]){ ++i; --j; } cout<<(i>=j?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; nth_element(a.begin(), a.begin()+n/2, a.end()); cout<<a[n/2]<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; sort(a.begin(),a.end()); cout<<a[n/2]<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); transform(s.begin(),s.end(),s.begin(),::tolower); cout<<s<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); for(char &c:s) c=tolower((unsigned char)c); cout<<s<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; cin>>n; cout<<( (n%400==0) || (n%4==0 && n%100!=0) ? ""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; cin>>n; bool leap=false; if(n%4==0){ leap=true; if(n%100==0 && n%400!=0) leap=false; } cout<<(leap?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; cout<<count(s.begin(),s.end(),'a')<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; int c=0; for(char ch:s) if(ch=='a') ++c; cout<<c<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; cout<<accumulate(a.begin(),a.end(),0LL)<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; long long s=0; for(int i=0,x;i<n;i++){cin>>x; s+=x;} cout<<s<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; string t=s; sort(t.begin(),t.end()); t.erase(unique(t.begin(),t.end()),t.end()); cout<<t.size()<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; unordered_set<char> st(s.begin(),s.end()); cout<<st.size()<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n,k; cin>>n>>k; vector<int>a(n); for(int&i:a)cin>>i; rotate(a.begin(), a.begin()+(k%n), a.end()); for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<a[i]; } cout<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n,k; cin>>n>>k; vector<int>a(n),b(n); for(int&i:a)cin>>i; k%=n; for(int i=0;i<n;i++) b[(i+n-(k%n))%n]=a[i]; for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<b[i]; } cout<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); string t=s; reverse(t.begin(),t.end()); cout<<(s==t?""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); int i=0,j=(int)s.size()-1; while(i<j && s[i]==s[j]){ ++i; --j; } cout<<(i>=j?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; stable_sort(a.begin(),a.end()); for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<a[i]; } cout<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; multiset<int> s; for(int i=0,x;i<n;i++){cin>>x; s.insert(x);} bool f=true; for(int x:s){ if(!f) cout<<"" ""; f=false; cout<<x; } cout<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; cout<<(equal(s.begin(),s.begin()+s.size()/2, s.rbegin())?""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; int i=0,j=(int)s.size()-1; while(i<j && s[i]==s[j]){ ++i; --j; } cout<<(i>=j?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; nth_element(a.begin(), a.begin()+n/2, a.end()); cout<<a[n/2]<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; sort(a.begin(),a.end()); cout<<a[n/2]<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); transform(s.begin(),s.end(),s.begin(),::tolower); cout<<s<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); for(char &c:s) c=tolower((unsigned char)c); cout<<s<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; cin>>n; cout<<( (n%400==0) || (n%4==0 && n%100!=0) ? ""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; cin>>n; bool leap=false; if(n%4==0){ leap=true; if(n%100==0 && n%400!=0) leap=false; } cout<<(leap?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; cout<<count(s.begin(),s.end(),'a')<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; int c=0; for(char ch:s) if(ch=='a') ++c; cout<<c<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; cout<<accumulate(a.begin(),a.end(),0LL)<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; long long s=0; for(int i=0,x;i<n;i++){cin>>x; s+=x;} cout<<s<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; string t=s; sort(t.begin(),t.end()); t.erase(unique(t.begin(),t.end()),t.end()); cout<<t.size()<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; unordered_set<char> st(s.begin(),s.end()); cout<<st.size()<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n,k; cin>>n>>k; vector<int>a(n); for(int&i:a)cin>>i; rotate(a.begin(), a.begin()+(k%n), a.end()); for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<a[i]; } cout<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n,k; cin>>n>>k; vector<int>a(n),b(n); for(int&i:a)cin>>i; k%=n; for(int i=0;i<n;i++) b[(i+n-(k%n))%n]=a[i]; for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<b[i]; } cout<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); string t=s; reverse(t.begin(),t.end()); cout<<(s==t?""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); int i=0,j=(int)s.size()-1; while(i<j && s[i]==s[j]){ ++i; --j; } cout<<(i>=j?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; stable_sort(a.begin(),a.end()); for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<a[i]; } cout<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; multiset<int> s; for(int i=0,x;i<n;i++){cin>>x; s.insert(x);} bool f=true; for(int x:s){ if(!f) cout<<"" ""; f=false; cout<<x; } cout<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; cout<<(equal(s.begin(),s.begin()+s.size()/2, s.rbegin())?""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; int i=0,j=(int)s.size()-1; while(i<j && s[i]==s[j]){ ++i; --j; } cout<<(i>=j?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; nth_element(a.begin(), a.begin()+n/2, a.end()); cout<<a[n/2]<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; sort(a.begin(),a.end()); cout<<a[n/2]<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); transform(s.begin(),s.end(),s.begin(),::tolower); cout<<s<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); for(char &c:s) c=tolower((unsigned char)c); cout<<s<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; cin>>n; cout<<( (n%400==0) || (n%4==0 && n%100!=0) ? ""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; cin>>n; bool leap=false; if(n%4==0){ leap=true; if(n%100==0 && n%400!=0) leap=false; } cout<<(leap?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; cout<<count(s.begin(),s.end(),'a')<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; int c=0; for(char ch:s) if(ch=='a') ++c; cout<<c<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; cout<<accumulate(a.begin(),a.end(),0LL)<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; long long s=0; for(int i=0,x;i<n;i++){cin>>x; s+=x;} cout<<s<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; string t=s; sort(t.begin(),t.end()); t.erase(unique(t.begin(),t.end()),t.end()); cout<<t.size()<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; unordered_set<char> st(s.begin(),s.end()); cout<<st.size()<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n,k; cin>>n>>k; vector<int>a(n); for(int&i:a)cin>>i; rotate(a.begin(), a.begin()+(k%n), a.end()); for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<a[i]; } cout<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n,k; cin>>n>>k; vector<int>a(n),b(n); for(int&i:a)cin>>i; k%=n; for(int i=0;i<n;i++) b[(i+n-(k%n))%n]=a[i]; for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<b[i]; } cout<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); string t=s; reverse(t.begin(),t.end()); cout<<(s==t?""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); int i=0,j=(int)s.size()-1; while(i<j && s[i]==s[j]){ ++i; --j; } cout<<(i>=j?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; stable_sort(a.begin(),a.end()); for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<a[i]; } cout<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; multiset<int> s; for(int i=0,x;i<n;i++){cin>>x; s.insert(x);} bool f=true; for(int x:s){ if(!f) cout<<"" ""; f=false; cout<<x; } cout<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; cout<<(equal(s.begin(),s.begin()+s.size()/2, s.rbegin())?""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; int i=0,j=(int)s.size()-1; while(i<j && s[i]==s[j]){ ++i; --j; } cout<<(i>=j?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; nth_element(a.begin(), a.begin()+n/2, a.end()); cout<<a[n/2]<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; sort(a.begin(),a.end()); cout<<a[n/2]<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); transform(s.begin(),s.end(),s.begin(),::tolower); cout<<s<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); for(char &c:s) c=tolower((unsigned char)c); cout<<s<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; cin>>n; cout<<( (n%400==0) || (n%4==0 && n%100!=0) ? ""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long n; cin>>n; bool leap=false; if(n%4==0){ leap=true; if(n%100==0 && n%400!=0) leap=false; } cout<<(leap?""Yes"":""No"")<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; cout<<count(s.begin(),s.end(),'a')<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; int c=0; for(char ch:s) if(ch=='a') ++c; cout<<c<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; vector<int>a(n); for(int&i:a)cin>>i; cout<<accumulate(a.begin(),a.end(),0LL)<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; cin>>n; long long s=0; for(int i=0,x;i<n;i++){cin>>x; s+=x;} cout<<s<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; string t=s; sort(t.begin(),t.end()); t.erase(unique(t.begin(),t.end()),t.end()); cout<<t.size()<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; cin>>s; unordered_set<char> st(s.begin(),s.end()); cout<<st.size()<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n,k; cin>>n>>k; vector<int>a(n); for(int&i:a)cin>>i; rotate(a.begin(), a.begin()+(k%n), a.end()); for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<a[i]; } cout<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n,k; cin>>n>>k; vector<int>a(n),b(n); for(int&i:a)cin>>i; k%=n; for(int i=0;i<n;i++) b[(i+n-(k%n))%n]=a[i]; for(int i=0;i<n;i++){ if(i) cout<<"" ""; cout<<b[i]; } cout<<""\n""; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); string t=s; reverse(t.begin(),t.end()); cout<<(s==t?""Yes"":""No"")<<""\n""; }","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; getline(cin,s); if(s.empty()) getline(cin,s); int i=0,j=(int)s.size()-1; while(i<j && s[i]==s[j]){ ++i; --j; } cout<<(i>=j?""Yes"":""No"")<<""\n""; }",0
+"#include <iostream>
+using namespace std;
+
+int main(){
+	int n;
+	while ( cin >> n ){
+		if ( !n ) break;
+		int* a = new int[ n ];
+		for ( int i = 0; i < n; ++i ){
+			cin >> a[ i ];
+		}
+		int sum, max = a[ 0 ];
+		for ( int i = 0; i < n; ++i ){
+			sum = 0;
+			for ( int j = i; j < n; ++j ){
+			sum += a[ j ];
+			if ( sum > max ) max = sum;
+			}
+		}
+		cout << max << endl;
+		delete[] a;
+	}
+
+	return 0;
+}","#include<iostream>
+using namespace std;
+
+int main()
+{
+	int n;
+	while(cin>>n){
+		if(n==0) break;
+		int a[n], S[n], sum=0;
+		for(int i=0;i<n;++i){
+			cin>>a[i];
+			sum+=a[i];
+			S[i]=sum;
+		}
+
+		long max=S[0];
+		for(int i=1;i<n;++i){
+			if(S[i]>max) max=S[i];
+			for(int j=0;j<i;++j){
+				if(S[i]-S[j]>max) max=S[i]-S[j];
+			}
+		}
+
+		cout<<max<<endl;
+	}
+
+	return 0;
+}",0
+"#include <iostream>
+
+using namespace std;
+
+void solve()
+{
+	int a[3];
+	for (int i = 0; i < 3; ++i)
+	{
+		cin >> a[i];
+	}
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = i + 1; j < 3; ++j)
+		{
+			if (a[j] < a[i])
+			{
+				int temp = a[j];
+				a[j] = a[i];
+				a[i] = temp;
+			}
+		}
+	}
+	for (int i = 0; i < 2; ++i)
+	{
+		cout << a[i] << "" "";
+	}
+	cout << a[2] << endl;
+}
+
+int main()
+{
+	solve();
+	return(0);
+}","#include <iostream>
+using namespace std;
+int main() {
+  int x, y, z;
+  cin >> x >> y >> z;
+  int a;
+  while (x>y || x>z) {
+    a=x;
+    x=y;
+    y=z;
+    z=a;
+  }
+  while (y>z) {
+    a=y;
+    y=z;
+    z=a;
+  }
+  cout << x << "" "" << y << "" "" << z << endl;
+}",0
+"#include <iostream>
+
+using namespace std;
+
+void solve()
+{
+	int a[3];
+	for (int i = 0; i < 3; ++i)
+	{
+		cin >> a[i];
+	}
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = i + 1; j < 3; ++j)
+		{
+			if (a[j] > a[i])
+			{
+				int temp = a[j];
+				a[j] = a[i];
+				a[i] = temp;
+			}
+		}
+	}
+	for (int i = 0; i < 2; ++i)
+	{
+		cout << a[i] << "" "";
+	}
+	cout << a[2] << endl;
+}
+
+int main()
+{
+	solve();
+	return(0);
+}","#include <iostream>
+using namespace std;
+int main() {
+  int x, y, z;
+  cin >> x >> y >> z;
+  int a;
+  while (x<y || x<z) {
+    a=x;
+    x=y;
+    y=z;
+    z=a;
+  }
+  while (y<z) {
+    a=y;
+    y=z;
+    z=a;
+  }
+  cout << x << "" "" << y << "" "" << z << endl;
+}",0
+"#include <bits/stdc++.h>
+
+using namespace std;
+
+const int N=3e5+5;
+
+int co[N],ans[N];
+int n;
+
+int main()
+{
+	scanf(""%d"",&n);
+	for(int i=0;i<n;i++)
+	{
+		int x;
+		scanf(""%d"",&x);
+		co[x]++;
+	}
+	sort(co+1,co+n+1);
+	int l=1,curs=0;
+	for(int i=1;i<=n;i++)
+	{
+		while(l<=n&&co[l]<i) curs+=co[l++];
+		ans[i]=(curs+(n-l+1)*i)/i;
+	}
+	ans[0]=(1<<30);
+	l=n;
+	for(int i=1;i<=n;i++)
+	{
+		while(ans[l]<i) l--;
+		printf(""%d\n"",l);
+	}
+}","#include<bits/stdc++.h>
+using namespace std;
+#define maxn 300000
+int a[maxn+5],ans[maxn+5];
+int main(){
+//	freopen(""1.in"",""r"",stdin);
+//	freopen(""1.out"",""w"",stdout);
+	int n,x;scanf(""%d"",&n);
+	for(int i=0;i<n;i++)scanf(""%d"",&x),a[x]++;
+	sort(a+1,a+n+1,greater<int>());a[0]=maxn*2;
+	int remain=0,l=n;
+	for(int i=n;i;i--){
+		l=min(l,i);
+		do{
+			if(a[l]==a[l-1])l--;
+			if(remain>=i-l+1){
+				int x=min(remain/(i-l+1),a[l-1]-a[l]);
+				remain-=x*(i-l+1),a[l]+=x;
+			}
+		}while(a[l]==a[l-1]);
+		remain+=(ans[i]=a[l]);
+	}
+	for(int i=1;i<=n;i++)printf(""%d\n"",ans[i]);
+	return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+vector<int> twoSum(vector<int>& nums, int target) {
+    for(int i = 0; i < nums.size(); i++)
+        for(int j = i+1; j < nums.size(); j++)
+            if(nums[i] + nums[j] == target)
+                return {i, j};
+    return {};
+}
+int main() {
+    int n, target;
+    cin >> n >> target;
+    vector<int> nums(n);
+    for(int i = 0; i < n; i++) cin >> nums[i];
+
+    vector<int> ans = twoSum(nums, target);
+    if(ans.size()) cout << ans[0] << "" "" << ans[1] << endl;
+    return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int,int> mp;
+    for(int i = 0; i < nums.size(); i++){
+        int need = target - nums[i];
+        if(mp.count(need)) return {mp[need], i};
+        mp[nums[i]] = i;
+    }
+    return {};
+}
+
+int main() {
+    int n, target;
+    cin >> n >> target;
+    vector<int> nums(n);
+    for(int i = 0; i < n; i++) cin >> nums[i];
+
+    vector<int> ans = twoSum(nums, target);
+    if(ans.size()) cout << ans[0] << "" "" << ans[1] << endl;
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+
+    int sum = 0;
+    for(int i = 0; i < n; i++) sum += a[i];
+
+    cout << sum << endl;
+    return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+
+    int sum = accumulate(a.begin(), a.end(), 0);
+
+    cout << sum << endl;
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+
+    string t = s;
+    int l = 0, r = s.size() - 1;
+    while(l < r) {
+        swap(t[l], t[r]);
+        l++;
+        r--;
+    }
+
+    cout << t << endl;
+    return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+
+    reverse(s.begin(), s.end());
+    cout << s << endl;
+
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int x;
+    cin >> x;
+
+    if(x % 2 == 0) cout << ""Even\n"";
+    else cout << Odd\n”; return 0; }”","#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int x;
+    cin >> x;
+
+    if((x & 1) == 0) cout << ""Even\n"";
+    else cout << ""Odd\n"";
+
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+
+    int count = 0;
+    for(char c : s) {
+        if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+            count++;
+    }
+
+    cout << count << endl;
+    return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+
+    unordered_set<char> vowels = {'a', 'e', 'i', 'o', 'u'};
+    int count = 0;
+    for(char c : s) {
+        if(vowels.count(c)) count++;
+    }
+
+    cout << count << endl;
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n; 
+    cin >> n;
+    vector<int> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+
+    int mx = a[0];
+    for(int i = 1; i < n; i++)
+        if(a[i] > mx)
+            mx = a[i];
+
+    cout << mx << endl;
+    return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n; 
+    cin >> n;
+    vector<int> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+
+    int mx = *max_element(a.begin(), a.end());
+    cout << mx << endl;
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n, x; 
+    cin >> n >> x;
+    vector<int> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    int cnt = 0;
+    for(int v : a) if(v == x) cnt++;
+    cout << cnt << endl;
+    return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n, x; 
+    cin >> n >> x;
+    vector<int> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    cout << count(a.begin(), a.end(), x) << endl;
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n; 
+    cin >> n;
+    vector<int> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+
+    bool sorted = true;
+    for(int i = 1; i < n; i++)
+        if(a[i] < a[i-1]) sorted = false;
+
+    cout << (sorted ? ""YES"" : ""NO"") << endl;
+    return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n; 
+    cin >> n;
+    vector<int> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+
+    cout << (is_sorted(a.begin(), a.end()) ? ""YES"" : ""NO"") << endl;
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+bool uniqueChars(const string &s, int l, int r) {
+    vector<int> freq(256, 0);
+    for(int i = l; i <= r; i++) {
+        if(freq[s[i]]++) return false;
+    }
+    return true;
+}
+
+int main() {
+    string s;
+    cin >> s;
+
+    int ans = 0;
+    for(int i = 0; i < s.size(); i++)
+        for(int j = i; j < s.size(); j++)
+            if(uniqueChars(s, i, j))
+                ans = max(ans, j - i + 1);
+
+    cout << ans << endl;
+    return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+
+    vector<int> freq(256, -1);
+    int left = 0, ans = 0;
+
+    for(int right = 0; right < s.size(); right++) {
+        if(freq[s[right]] >= left)
+            left = freq[s[right]] + 1;
+        freq[s[right]] = right;
+        ans = max(ans, right - left + 1);
+    }
+
+    cout << ans << endl;
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+void gen(int open, int close, string cur, vector<string>& res) {
+    if(open==0 && close==0) {
+        res.push_back(cur);
+        return;
+    }
+    if(open>0) gen(open-1, close, cur+""("", res);
+    if(close>open) gen(open, close-1, cur+"")"", res);
+}
+
+int main() {
+    int n; cin >> n;
+    vector<string> res;
+    gen(n,n,"""",res);
+    for(auto &s:res) cout<<s<<""\n"";
+}","#include <bits/stdc++.h>
+using namespace std;
+
+struct Node{ string s; int open, close; };
+
+int main(){
+    int n; cin >> n;
+    queue<Node> q;
+    q.push({"""",n,n});
+    while(!q.empty()){
+        auto cur = q.front(); q.pop();
+        if(cur.open==0 && cur.close==0){
+            cout << cur.s << ""\n"";
+            continue;
+        }
+        if(cur.open>0) q.push({cur.s+""("",cur.open-1,cur.close});
+        if(cur.close>cur.open) q.push({cur.s+"")"",cur.open,cur.close-1});
+    }
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n; cin>>n;
+    vector<string>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    map<string,vector<string>> mp;
+    for(auto &s:a){
+        string t=s;
+        sort(t.begin(),t.end());
+        mp[t].push_back(s);
+    }
+    for(auto &p:mp){
+        for(auto &w:p.second) cout<<w<<"" "";
+        cout<<""\n"";
+    }
+}","#include <bits/stdc++.h>
+using namespace std;
+string key(string s){
+    vector<int> f(26,0);
+    for(char c:s) f[c-'a']++;
+    string k;
+    for(int x:f) k+=to_string(x)+""#"";
+    return k;
+}
+int main(){
+    int n; cin>>n;
+    vector<string>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    unordered_map<string,vector<string>> mp;
+    for(auto &s:a) mp[key(s)].push_back(s);
+    for(auto &p:mp){
+        for(auto &w:p.second) cout<<w<<"" "";
+        cout<<""\n"";
+    }
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n; cin>>n;
+    vector<pair<int,int>> a(n);
+    for(int i=0;i<n;i++) cin>>a[i].first>>a[i].second;
+    sort(a.begin(),a.end());
+    vector<pair<int,int>> res;
+    res.push_back(a[0]);
+    for(int i=1;i<n;i++){
+        auto &b=res.back();
+        if(a[i].first<=b.second) b.second=max(b.second,a[i].second);
+        else res.push_back(a[i]);
+    }
+    for(auto &p:res) cout<<p.first<<"" ""<<p.second<<""\n"";
+}","#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n; cin>>n;
+    vector<pair<int,int>> a(n);
+    for(int i=0;i<n;i++) cin>>a[i].first>>a[i].second;
+    sort(a.begin(),a.end());
+    stack<pair<int,int>> st;
+    st.push(a[0]);
+    for(int i=1;i<n;i++){
+        auto top = st.top();
+        if(a[i].first<=top.second){
+            st.pop();
+            top.second=max(top.second,a[i].second);
+            st.push(top);
+        } else st.push(a[i]);
+    }
+    vector<pair<int,int>> out;
+    while(!st.empty()){ out.push_back(st.top()); st.pop(); }
+    reverse(out.begin(),out.end());
+    for(auto &p:out) cout<<p.first<<"" ""<<p.second<<""\n"";
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n; cin>>n;
+    vector<int>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    int c0=0,c1=0,c2=0;
+    for(int x:a) if(x==0)c0++; else if(x==1)c1++; else c2++;
+    for(int i=0;i<c0;i++) a[i]=0;
+    for(int i=c0;i<c0+c1;i++) a[i]=1;
+    for(int i=c0+c1;i<n;i++) a[i]=2;
+    for(int x:a) cout<<x<<"" "";
+}","#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n; cin>>n;
+    vector<int>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    int l=0,m=0,r=n-1;
+    while(m<=r){
+        if(a[m]==0) swap(a[l++],a[m++]);
+        else if(a[m]==1) m++;
+        else swap(a[m],a[r--]);
+    }
+    for(int x:a) cout<<x<<"" "";
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n,k; cin>>n>>k;
+    vector<int>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    int ans=0;
+    for(int i=0;i<n;i++){
+        int sum=0;
+        for(int j=i;j<n;j++){
+            sum+=a[j];
+            if(sum==k) ans++;
+        }
+    }
+    cout<<ans;
+}","#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n,k; cin>>n>>k;
+    vector<int>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    unordered_map<int,int> mp;
+    mp[0]=1;
+    int sum=0,ans=0;
+    for(int x:a){
+        sum+=x;
+        if(mp.count(sum-k)) ans+=mp[sum-k];
+        mp[sum]++;
+    }
+    cout<<ans;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n; cin>>n;
+    vector<int>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    set<vector<int>> s;
+    for(int i=0;i<n;i++)
+        for(int j=i+1;j<n;j++)
+            for(int k=j+1;k<n;k++)
+                if(a[i]+a[j]+a[k]==0){
+                    vector<int> t={a[i],a[j],a[k]};
+                    sort(t.begin(),t.end());
+                    s.insert(t);
+                }
+    for(auto &v:s){
+        for(int x:v) cout<<x<<"" "";
+        cout<<""\n"";
+    }
+}","#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n; cin>>n;
+    vector<int>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    sort(a.begin(),a.end());
+    vector<vector<int>> res;
+    for(int i=0;i<n;i++){
+        if(i>0 && a[i]==a[i-1]) continue;
+        int l=i+1,r=n-1;
+        while(l<r){
+            int sum=a[i]+a[l]+a[r];
+            if(sum==0){
+                res.push_back({a[i],a[l],a[r]});
+                while(l<r && a[l]==a[l+1]) l++;
+                while(l<r && a[r]==a[r-1]) r--;
+                l++; r--;
+            }
+            else if(sum<0) l++;
+            else r--;
+        }
+    }
+    for(auto &v:res){
+        for(int x:v) cout<<x<<"" "";
+        cout<<""\n"";
+    }
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    string s, p; cin>>s>>p;
+    int n=s.size(), m=p.size();
+    string t=p; sort(t.begin(),t.end());
+    for(int i=0;i+n<m;i++){
+        string cur=s.substr(i,m);
+        sort(cur.begin(),cur.end());
+        if(cur==t) cout<<i<<"" "";
+    }
+}","#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    string s,p; cin>>s>>p;
+    vector<int> fs(26,0), fp(26,0);
+    for(char c:p) fp[c-'a']++;
+    int m=p.size();
+    for(int i=0;i<s.size();i++){
+        fs[s[i]-'a']++;
+        if(i>=m) fs[s[i-m]-'a']--;
+        if(fs==fp) cout<<i-m+1<<"" "";
+    }
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n,m; cin>>n>>m;
+    vector<vector<int>> a(n,vector<int>(m));
+    queue<pair<int,int>> q;
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++){
+            cin>>a[i][j];
+            if(a[i][j]==0) q.push({i,j});
+            else a[i][j]=1e9;
+        }
+    int d[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
+    while(!q.empty()){
+        auto [x,y]=q.front(); q.pop();
+        for(auto &v:d){
+            int nx=x+v[0], ny=y+v[1];
+            if(nx>=0&&ny>=0&&nx<n&&ny<m && a[nx][ny]>a[x][y]+1){
+                a[nx][ny]=a[x][y]+1;
+                q.push({nx,ny});
+            }
+        }
+    }
+    for(auto &r:a){ for(int x:r) cout<<x<<"" ""; cout<<""\n""; }
+}","#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n,m; cin>>n>>m;
+    vector<vector<int>> a(n,vector<int>(m));
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
+            cin>>a[i][j];
+    int INF=1e9;
+    vector<vector<int>> d=a;
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
+            if(d[i][j]!=0){
+                d[i][j]=INF;
+                if(i>0) d[i][j]=min(d[i][j],d[i-1][j]+1);
+                if(j>0) d[i][j]=min(d[i][j],d[i][j-1]+1);
+            }
+    for(int i=n-1;i>=0;i--)
+        for(int j=m-1;j>=0;j--)
+            if(d[i][j]!=0){
+                if(i<n-1) d[i][j]=min(d[i][j],d[i+1][j]+1);
+                if(j<m-1) d[i][j]=min(d[i][j],d[i][j+1]+1);
+            }
+    for(auto &r:d){ for(int x:r) cout<<x<<"" ""; cout<<""\n""; }
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n,s; cin>>n>>s;
+    vector<int>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    int ans=1e9;
+    for(int i=0;i<n;i++){
+        int sum=0;
+        for(int j=i;j<n;j++){
+            sum+=a[j];
+            if(sum>=s){
+                ans=min(ans,j-i+1);
+                break;
+            }
+        }
+    }
+    cout<<(ans==1e9?0:ans);
+}","#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n,s; cin>>n>>s;
+    vector<int>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    int ans=1e9,sum=0,l=0;
+    for(int r=0;r<n;r++){
+        sum+=a[r];
+        while(sum>=s){
+            ans=min(ans,r-l+1);
+            sum-=a[l++];
+        }
+    }
+    cout<<(ans==1e9?0:ans);
+}",0
+"// D.
+
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long LL;
+
+int main(int argc, char *argv[]) {
+	const LL n = 50;
+	LL k;
+	cin >> k;
+
+	LL a[n];
+	fill(a, a + n, k / n + n - 1);
+	for (LL i = 0; i < k % n; ++i) {
+		int t = i % n;
+		for (int j = 0; j < n; ++j) {
+			if (t == j) {
+				a[j] += n;
+			} else {
+				a[j] -= 1;
+			}
+		}
+	}
+
+	cout << n << endl;
+	for (int i = 0; i < n; ++i) {
+		if (i) {
+			cout << "" "";
+		}
+		cout << a[i];
+	}
+	cout << endl;
+}","#include <iostream>
+#include <string>
+#include <utility>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <vector>
+#include <cmath>
+#include <cstdlib>
+#include <queue>
+#include <stack>
+#include <iomanip>
+
+
+using namespace std;
+
+#define REP(i, n) for(ll i = 0;i < n;i++)
+#define REPR(i, n) for(ll i = n;i >= 0;i--)
+#define FOR(i, m, n) for(ll i = m;i < n;i++)
+#define FORR(i, m, n) for(ll i = m;i >= n;i--)
+#define REPO(i, n) for(ll i = 1;i <= n;i++)
+#define ll long long
+#define INF 1999999999
+#define MINF -1999999999
+#define INF64 1999999999999999999
+#define ALL(n) n.begin(),n.end()
+#define MOD 1000000007
+
+ll n, ans[50];
+int main() {
+	cin >> n;
+	REP(i, 50)ans[i] = 49 - i;
+	REP(i, 50)ans[i] += n / 50;
+	n %= 50;
+	REP(i, n)ans[i]++;
+	cout << 50 << endl;
+	REP(i, 50) {
+		if (i != 0)cout << "" "";
+		cout << ans[i];
+	}
+	cout << endl;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+void dfs(vector<string>& g, int x, int y){
+    if(x<0||y<0||x>=g.size()||y>=g[0].size()||g[x][y]=='0') return;
+    g[x][y]='0';
+    dfs(g,x+1,y); dfs(g,x-1,y); dfs(g,x,y+1); dfs(g,x,y-1);
+}
+
+int main(){
+    int n,m; cin>>n>>m;
+    vector<string> g(n);
+    for(int i=0;i<n;i++) cin>>g[i];
+    int ans=0;
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
+            if(g[i][j]=='1'){
+                ans++;
+                dfs(g,i,j);
+            }
+    cout<<ans;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n,m; cin>>n>>m;
+    vector<string> g(n);
+    for(int i=0;i<n;i++) cin>>g[i];
+    int ans=0;
+    int d[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(g[i][j]=='1'){
+                ans++;
+                queue<pair<int,int>> q;
+                q.push({i,j});
+                g[i][j]='0';
+                while(!q.empty()){
+                    auto [x,y]=q.front(); q.pop();
+                    for(auto &v:d){
+                        int nx=x+v[0], ny=y+v[1];
+                        if(nx>=0&&ny>=0&&nx<n&&ny<m&&g[nx][ny]=='1'){
+                            g[nx][ny]='0';
+                            q.push({nx,ny});
+                        }
+                    }
+                }
+            }
+        }
+    }
+    cout<<ans;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+void dfs(vector<string>& b,int x,int y){
+    if(x<0||y<0||x>=b.size()||y>=b[0].size()||b[x][y]!='O') return;
+    b[x][y]='S';
+    dfs(b,x+1,y); dfs(b,x-1,y); dfs(b,x,y+1); dfs(b,x,y-1);
+}
+
+int main(){
+    int n,m; cin>>n>>m;
+    vector<string> b(n);
+    for(int i=0;i<n;i++) cin>>b[i];
+
+    for(int i=0;i<n;i++) dfs(b,i,0), dfs(b,i,m-1);
+    for(int j=0;j<m;j++) dfs(b,0,j), dfs(b,n-1,j);
+
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
+            if(b[i][j]=='O') b[i][j]='X';
+            else if(b[i][j]=='S') b[i][j]='O';
+
+    for(auto &r:b) cout<<r<<""\n"";
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n,m; cin>>n>>m;
+    vector<string> b(n);
+    for(int i=0;i<n;i++) cin>>b[i];
+
+    queue<pair<int,int>> q;
+    for(int i=0;i<n;i++) for(int j:{0,m-1}) if(b[i][j]=='O') q.push({i,j});
+    for(int j=0;j<m;j++) for(int i:{0,n-1}) if(b[i][j]=='O') q.push({i,j});
+
+    int d[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
+    while(!q.empty()){
+        auto [x,y]=q.front(); q.pop();
+        if(b[x][y]!='O') continue;
+        b[x][y]='S';
+        for(auto &v:d){
+            int nx=x+v[0], ny=y+v[1];
+            if(nx>=0&&ny>=0&&nx<n&&ny<m && b[nx][ny]=='O')
+                q.push({nx,ny});
+        }
+    }
+
+    for(int i=0;i<n;i++) for(int j=0;j<m;j++)
+        b[i][j]=(b[i][j]=='S'?'O':'X');
+
+    for(auto &r:b) cout<<r<<""\n"";
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+void perm(int i, vector<int>&a){
+    if(i==a.size()){
+        for(int x:a) cout<<x<<"" "";
+        cout<<""\n"";
+        return;
+    }
+    for(int j=i;j<a.size();j++){
+        swap(a[i],a[j]);
+        perm(i+1,a);
+        swap(a[i],a[j]);
+    }
+}
+
+int main(){
+    int n; cin>>n;
+    vector<int>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    perm(0,a);
+}","#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n; cin>>n;
+    vector<int>a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    sort(a.begin(),a.end());
+    do{
+        for(int x:a) cout<<x<<"" "";
+        cout<<""\n"";
+    }while(next_permutation(a.begin(),a.end()));
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+void dfs(int u, vector<vector<int>>&g, vector<int>&vis){
+    vis[u]=1;
+    for(int v:g[u]) if(!vis[v]) dfs(v,g,vis);
+}
+int main(){
+    int n; cin>>n;
+    vector<vector<int>>g(n);
+    for(int i=0;i<n;i++){
+        int k; cin>>k;
+        g[i].resize(k);
+        for(int j=0;j<k;j++) cin>>g[i][j];
+    }
+    vector<int>vis(n,0);
+    dfs(0,g,vis);
+    bool ok=all_of(vis.begin(),vis.end(),[](int x){return x==1;});
+    cout<<(ok?""YES"":""NO"");
+}","#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n; cin>>n;
+    vector<vector<int>>g(n);
+    for(int i=0;i<n;i++){
+        int k; cin>>k;
+        g[i].resize(k);
+        for(int j=0;j<k;j++) cin>>g[i][j];
+    }
+    vector<int>vis(n,0); queue<int>q;
+    q.push(0); vis[0]=1;
+    while(!q.empty()){
+        int u=q.front(); q.pop();
+        for(int v:g[u]) if(!vis[v]) vis[v]=1, q.push(v);
+    }
+    bool ok=true;
+    for(int x:vis) if(!x) ok=false;
+    cout<<(ok?""YES"":""NO"");
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++) cin >> a[i];
+
+    int mx = a[0];
+    for(int i=1;i<n;i++)
+        if(a[i] > mx) mx = a[i];
+
+    cout << mx;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++) cin >> a[i];
+
+    cout << *max_element(a.begin(), a.end());
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    int rev = 0;
+    while(n != 0){
+        rev = rev * 10 + (n % 10);
+        n /= 10;
+    }
+    cout << rev;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    string s; cin >> s;
+    reverse(s.begin(), s.end());
+    cout << s;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    int c = 0;
+    do{
+        c++;
+        n /= 10;
+    } while(n > 0);
+    cout << c;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    long long n; cin >> n;
+    cout << to_string(n).size();
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    if(n < 2){ cout << ""no""; return 0; }
+
+    for(int i=2;i*i<=n;i++){
+        if(n % i == 0){
+            cout << ""no"";
+            return 0;
+        }
+    }
+    cout << ""yes"";
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    const int MAX = 100000;
+    vector<bool> prime(MAX+1, true);
+    prime[0]=prime[1]=false;
+    for(int i=2;i*i<=MAX;i++)
+        if(prime[i])
+            for(int j=i*i;j<=MAX;j+=i)
+                prime[j] = false;
+
+    cout << (prime[n] ? ""yes"" : ""yes"");
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int gcd(int a, int b){
+    if(b == 0) return a;
+    return gcd(b, a % b);
+}
+
+int main(){
+    int a, b;
+    cin >> a >> b;
+    cout << gcd(a, b);
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int a, b;
+    cin >> a >> b;
+    while(b != 0){
+        int t = a % b;
+        a = b;
+        b = t;
+    }
+    cout << a;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int fib(int n){
+    if(n <= 1) return n;
+    return fib(n-1) + fib(n-2);
+}
+
+int main(){
+    int n; cin >> n;
+    cout << fib(n);
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    if(n <= 1){ cout << n; return 0; }
+    vector<int> f(n+1);
+    f[0] = 0; f[1] = 1;
+    for(int i = 2; i <= n; i++)
+        f[i] = f[i-1] + f[i-2];
+    cout << f[n];
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    string s; cin >> s;
+    int l = 0, r = s.size() - 1;
+    while(l < r){
+        if(s[l] != s[r]){
+            cout << ""NO"";
+            return 0;
+        }
+        l++; r--;
+    }
+    cout << ""YES"";
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    string s; cin >> s;
+    string t = s;
+    reverse(t.begin(), t.end());
+    cout << (t == s ? ""YES"" : ""NO"");
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    vector<string> a(n);
+    for(int i=0;i<n;i++) cin >> a[i];
+    sort(a.begin(), a.end());
+    for(auto &s : a) cout << s << ""\n"";
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    vector<string> a(n);
+    for(int i=0;i<n;i++) cin >> a[i];
+
+    for(int i=0;i<n;i++)
+        for(int j=0;j+1<n;j++)
+            if(a[j] > a[j+1])
+                swap(a[j], a[j+1]);
+
+    for(auto &s : a) cout << s << ""\n"";
+}",0
+"#include <bits/stdc++.h>
+// #include <atcoder/all>
+using namespace std;
+// using namespace atcoder;
+template <class T, class U>
+ostream &operator<<(ostream &os, const pair<T, U> &p) {
+  os << ""("" << p.first << "","" << p.second << "")"";
+  return os;
+}
+#ifdef __LOCAL
+#define debug(x) cerr << __LINE__ << "": "" << #x << "" = "" << (x) << '\n'
+#define debugArray(x, n)                                      \
+  cerr << __LINE__ << "": "" << #x << "" = {"";                   \
+  for (long long hoge = 0; (hoge) < (long long)(n); ++(hoge)) \
+    cerr << ((hoge) ? "","" : """") << x[hoge];                   \
+  cerr << ""}"" << '\n'
+#define debugMatrix(x, h, w)                                         \
+  cerr << __LINE__ << "": "" << #x << "" =\n"";                          \
+  for (long long hoge = 0; (hoge) < (long long)(h); ++(hoge)) {      \
+    cerr << ((hoge ? "" {"" : ""{{""));                                  \
+    for (long long fuga = 0; (fuga) < (long long)(w); ++(fuga))      \
+      cerr << ((fuga ? "", "" : """")) << x[hoge][fuga];                 \
+    cerr << ""}"" << (hoge + 1 == (long long)(h) ? ""}"" : "","") << '\n'; \
+  }
+#else
+#define debug(x) (void(0))
+#define debugArray(x, n) (void(0))
+#define debugMatrix(x, h, w) (void(0))
+#endif
+
+signed main() {
+  cin.tie(0);
+  ios::sync_with_stdio(0);
+  function<pair<int, long long>(int, long long)> rec = [&](int d, long long n) {
+    if (n == 1) return make_pair(d, 0ll);
+    long long ret = n / 2;
+    int D = 2 * d;
+    if (D >= 10) {
+      ret += n / 2;
+      D = D % 10 + 1;
+    }
+    int DD;
+    long long add;
+    tie(DD, add) = rec(D, n / 2);
+    ret += add;
+    if (n & 1) {
+      ret++;
+      DD += d;
+      if (DD >= 10) {
+        ret++;
+        DD = DD % 10 + 1;
+      }
+    }
+    return make_pair(DD, ret);
+  };
+  int M;
+  cin >> M;
+  long long ans = -1;
+  int cur = 0;
+  for (int i = 0; i < M; i++) {
+    int d;
+    long long c;
+    cin >> d >> c;
+    int D;
+    long long cnt;
+    tie(D, cnt) = rec(d, c);
+    ans += cnt + 1;
+    cur += D;
+    if (cur >= 10) {
+      ans++;
+      cur = cur % 10 + 1;
+    }
+  }
+  cout << ans << '\n';
+  return 0;
+}","#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+const int MOD = 1e9+7;
+
+ll count(string &now){
+	ll sum{};
+	while(now.size()>1){
+		sum++;
+		int k = now.size();
+		int a = (*(now.end()-1))-'0';
+		int b = (*(now.end()-2))-'0';
+		now.erase(now.end()-2,now.end());
+		auto s = to_string(a+b);
+		now += s;
+	}
+	return sum;
+}
+pair<ll,string> count(ll d, ll c){
+	string s;
+	ll sum{};
+	while(c>1){
+		if(c%2) s += to_string(d);
+		d*=2;
+		c/=2;
+		sum += c;
+		if(d>9){
+			d = d/10 + d%10;
+			sum += c;
+		}
+	}
+	s += to_string(d);
+	sum += count(s);
+	return {sum,s};
+}
+
+int main(){
+	int m; cin>>m;
+	ll sum{};
+	string now;
+	for(int i=0; i<m; i++){
+		ll d,c; cin>>d>>c;
+		auto v = count(d,c);
+		sum += v.first;
+		now += v.second;
+	}
+	sum += count(now);
+	
+	cout << sum << endl;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+
+    int x = a;
+    while (x >= b)
+        x -= b; 
+
+    if (x == 0) cout << 0;
+    else cout << 1;
+
+    return 0;
+}","#include <iostream>
+using namespace std;
+
+int main() {
+	int N,K;
+	cin>>N>>K;
+    if(N%K!=0)
+        cout<<""1""<<endl;
+    else
+        cout<<""0""<<endl;
+
+	return 0;
+}",0
+"#include<bits/stdc++.h>
+using namespace std;
+int main(){
+  ios_base::sync_with_stdio(false);cin.tie(0);
+  int N;
+  int K;
+  int a = 0;
+  long long int sum = 0;
+  cin>>N;
+  cin>>K;
+  int arr[N];
+  for(int i = 0;i < N;i++){
+    cin>>arr[i];
+  }
+  sort(arr,arr + (N),greater<int>());
+  for(int i = 0;i <= N && i < K;i++){
+    arr[i] = 0;
+    a += 1;
+  }
+  for(int i = a;i < N;i++){
+    sum += arr[i];
+    //cout<<""A""<<arr[i]<<'\n';   
+  }
+  cout<<sum<<'\n';
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int N, K;
+    cin >> N >> K;
+
+    vector<long long> arr(N);
+    for(int i = 0; i < N; i++){
+        cin >> arr[i];
+    }
+
+    // sort ascending
+    sort(arr.begin(), arr.end());
+
+    long long sum = 0;
+
+    
+    for(int i = 0; i < N - K; i++){
+        sum += arr[i];
+    }
+
+    cout << sum << ""\n"";
+    return 0;
+}",0
+"#include <iostream>
+#include <vector>
+#include <algorithm>
+
+int main(){
+  int N, K;
+  std::cin >> N >> K;
+  
+  if (K >= N){
+    std::cout << 0;
+    return 0;
+  }
+  
+  std::vector<unsigned long> nums;
+  unsigned long n;
+  
+  while(std::cin >> n) nums.push_back(n);
+  std::sort(nums.begin(), nums.end(), std::greater<unsigned long>());
+  
+  unsigned long long sum = 0;
+  for (int i = K; i < N; i++) sum += nums[i];
+  
+  std::cout << sum;
+  
+  return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int N, K;
+    cin >> N >> K;
+
+    vector<long long> a(N);
+    for(int i = 0; i < N; i++)
+        cin >> a[i];
+
+    // Sort ascending
+    sort(a.begin(), a.end());
+
+    long long total = 0;
+
+    // Sum the smallest N-K elements
+    for(int i = 0; i < N - K; i++)
+        total += a[i];
+
+    cout << total << ""\n"";
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    long long sum = 0;
+    for(int i=0;i<n;i++){
+        int x; cin >> x;
+        if(x % 2 == 0) sum += x;
+    }
+    cout << sum;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    long long sum = 0;
+    for(int i=0;i<n;i++){
+        int x; cin >> x;
+        if(x % 2 == 1) continue;
+        sum += x;
+    }
+    cout << sum;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n, t; 
+    cin >> n >> t;
+    int c = 0, x;
+    for(int i=0;i<n;i++){
+        cin >> x;
+        if(x == t) c++;
+    }
+    cout << c;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n, t; 
+    cin >> n >> t;
+    vector<int> a(n);
+    for(int i=0;i<n;i++) cin >> a[i];
+    cout << count(a.begin(), a.end(), t);
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    string s; cin >> s;
+    for(char &c : s) c = toupper(c);
+    cout << s;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    string s; cin >> s;
+    for(char &c : s){
+        if(c >= 'a' && c <= 'z')
+            c = c - 'a' + 'A';
+    }
+    cout << s;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    int mn = INT_MAX, x;
+    for(int i=0;i<n;i++){
+        cin >> x;
+        if(x < mn) mn = x;
+    }
+    cout << mn;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n; cin >> n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++) cin >> a[i];
+    cout << *min_element(a.begin(), a.end());
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+typedef long long LL;
+const int N=200005;
+int n,L,T,p=0,res[N];
+int main(){
+	cin >> n >> L >> T;
+	for (int i=0,x,w;i<n;i++){
+		cin >> x >> w;
+		if (w==1)
+			res[i]=(x+T)%L,p=(p+(T+x)/L%n+n)%n;
+		else
+			res[i]=((x-T)%L+L)%L,p=(p-(T+L-x-1)/L%n+n)%n;
+	}
+	sort(res,res+n);
+	for (int i=0;i<n;i++,p=(p+1)%n)
+		printf(""%d\n"",res[p]);
+	return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, L;
+    long long T;
+    cin >> n >> L >> T;
+
+    vector<long long> pos(n);
+    vector<int> dir(n);
+    for(int i=0;i<n;i++){
+        cin >> pos[i] >> dir[i];
+    }
+
+    vector<pair<long long,int>> finalpos(n);
+    for(int i=0;i<n;i++){
+        long long np;
+        if(dir[i] == 1)
+            np = (pos[i] + T) % L;
+        else
+            np = ((pos[i] - T) % L + L) % L;
+        finalpos[i] = {np, dir[i]};
+    }
+
+    
+    sort(finalpos.begin(), finalpos.end(),
+         [](auto &a, auto &b){ return a.first < b.first; });
+
+    
+    
+    long long shift = 0;
+    for(int i=0;i<n;i++){
+        if(dir[i] == 1){
+            
+            shift = (shift + (pos[i] + T) / L) % n;
+        }else{
+        
+            shift = (shift - (T - pos[i] + L - 1) / L) % n;
+        }
+    }
+    shift = (shift % n + n) % n;
+
+    
+    vector<long long> ans(n);
+    for(int i=0;i<n;i++){
+        ans[(i + shift) % n] = finalpos[i].first;
+    }
+
+    for(auto &x : ans) cout << x << ""\n"";
+}",0
+"#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    long long n, l, t;
+    cin >> n >> l >> t;
+    vector<long long> x(n), w(n), last(n), ans(n);
+    for(int i = 0; i < n; i++) cin >> x[i] >> w[i];
+    for(int i = 0; i < n; i++) {
+        if(w[i] == 1) last[i] = (x[i] + t) % l;
+        else last[i] = ((x[i] - t) % l + l) % l;
+    }
+    sort(last.begin(), last.end());
+    long long cnt = 0;
+    for(int i = 0; i < n; i++) {
+        if(w[i] == 1) cnt -= (t - (l - x[i]) + l) / l;
+        else cnt += (t - (x[i] + 1) + l) / l;
+    }
+    cnt = (cnt % n + n) % n;
+    for(int i = 0; i < n; i++) ans[(i + cnt) % n] = last[i];
+    for(int i = 0; i < n; i++) cout << ans[i] << endl;
+    return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+struct Ant {
+    long long pos;
+    int dir;
+};
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long long n, L, T;
+    cin >> n >> L >> T;
+
+    vector<Ant> a(n);
+    for(int i = 0; i < n; i++){
+        cin >> a[i].pos >> a[i].dir;
+    }
+
+    
+    vector<pair<long long,int>> finalpos(n);
+    for(int i = 0; i < n; i++){
+        long long p = a[i].pos;
+        if(a[i].dir == 1)
+            p = (p + T) % L;
+        else
+            p = ((p - T) % L + L) % L;
+        finalpos[i] = {p, a[i].dir};
+    }
+
+    
+    sort(finalpos.begin(), finalpos.end(),
+        [](auto &x, auto &y){ return x.first < y.first; });
+
+  
+    long long shift = 0;
+    for(int i = 0; i < n; i++){
+        if(a[i].dir == 1){
+            shift = (shift + (a[i].pos + T) / L) % n;
+        } else {
+            shift = (shift - (T - a[i].pos + L - 1) / L) % n;
+        }
+    }
+    shift = (shift % n + n) % n;
+
+    
+    vector<long long> result(n);
+    for(int i = 0; i < n; i++){
+        result[(i + shift) % n] = finalpos[i].first;
+    }
+
+    for(long long x : result) cout << x << ""\n"";
+    return 0;
+}",0
+"#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+
+    int N, M; cin >> N >> M;
+    vector<int> A(M);
+    for (int i = 0; i < M; i++) cin >> A[i];
+    sort(A.begin(), A.end(), greater<int>());
+    vector<int> B = {6, 2, 5, 5, 4, 5, 6, 3, 7, 6};
+    vector<int> C(M);
+    for (int i = 0; i < M; i++) C[i] = B[A[i]];
+
+    vector<int> dp(N+1, -N);
+    dp[0] = 0;
+    for (int i = 1; i <= N; i++) {
+        for (int j = 0; j < M; j++) {
+            if (i-C[j] < 0) continue;
+            dp[i] = max(dp[i], dp[i-C[j]] + 1);
+        }
+    }
+
+    int i = N;
+    for (int j = 0; j < M; j++) {
+        while (i-C[j] >= 0 && dp[i-C[j]] == dp[i]-1) {
+            cout << A[j];
+            i -= C[j];
+        }
+    }
+    cout << ""\n"";
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int N, M;
+    cin >> N >> M;
+    vector<int> a(M);
+    for(int i = 0; i < M; i++) cin >> a[i];
+
+    vector<int> cost = {6,2,5,5,4,5,6,3,7,6};
+    sort(a.begin(), a.end(), [&](int x, int y){
+        if(cost[x] == cost[y]) return x > y;
+        return cost[x] < cost[y];
+    });
+
+    vector<int> dp(N+1, -1e9);
+    dp[0] = 0;
+    for(int i = 0; i <= N; i++){
+        if(dp[i] < 0) continue;
+        for(int d : a){
+            int c = cost[d];
+            if(i + c <= N) dp[i + c] = max(dp[i + c], dp[i] + 1);
+        }
+    }
+
+    int x = N;
+    while(x > 0){
+        for(int d : a){
+            int c = cost[d];
+            if(x - c >= 0 && dp[x - c] == dp[x] - 1){
+                cout << d;
+                x -= c;
+                break;
+            }
+        }
+    }
+    cout << ""\n"";
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main()
+  {int A, B, C, D; cin >> A >> B >> C >> D;
+  cout << max(0, min(B, D) - max(A, C));}","#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int A,B,C,D; cin>>A>>B>>C>>D;
+    int L = (A > C ? A : C);
+    int R = (B < D ? B : D);
+    int ans = R - L;
+    if(ans < 0) ans = 0;
+    cout << ans;
+}",0
+"#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <utility>
+using namespace std;
+typedef long long ll;
+#define rep(i, n) for (int i=0;i < (int)(n);i++)
+
+int main(){
+    int a,b,c,d;
+    cin >> a >> b >> c >> d;
+    if (min(b,d) -max(a,c) <= 0) cout << 0 << endl;
+    else cout << min(b,d)-max(a,c) << endl;
+    
+    
+    return 0;    
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int a,b,c,d;
+    cin >> a >> b >> c >> d;
+    int x = max(a,c);
+    int y = min(b,d);
+    int ans = y - x;
+    if(ans < 0) ans = 0;
+    cout << ans << ""\n"";
+}",0
+"#include <bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+ll MOD = 1000000007;
+
+#define vec                vector<int>
+#define vecll              vector<ll>
+#define vecst              vector<string>
+#define vecb               vector<bool>
+#define vec2(var, n, m)    vector<vector<int>> var(n, vector<int>(m, 0))
+#define vecll2(var, n, m)  vector<vector<ll>> var(n, vector<ll>(m, 0))
+
+#define rep(i,n)         for(ll i=(ll)0; i<(ll)n; i++)
+#define REP(i,m,n)       for(ll i=(ll)m; i<(ll)n; i++)
+#define arr(var, n)      vec var(n); rep(i,n){cin >> var[i];}
+#define arrll(var, n)    vecll var(n); rep(i,n){cin >> var[i];}
+#define arrst(var, n)    vecst var(n); rep(i,n){cin >> var[i];}
+#define all(var)         (var).begin(), (var).end()
+#define sortall(var)     sort(all(var))
+#define uniqueall(v)     v.erase(unique(v.begin(), v.end()), v.end());
+#define f_sum(var)       accumulate(all(var), 0)
+#define f_sumll(var)     accumulate(all(var), 0LL)
+#define chmin(v1, v2)    v1 = min(v1, v2)
+#define chmax(v1, v2)    v1 = max(v1, v2)
+#define mp(v1, v2)       make_pair(v1, v2)
+#define pb(var)          push_back(var)
+#define prt(var)         cout << (var) << ""\n""
+#define prtd(n, var)     cout << fixed << setprecision(n) << var << ""\n""
+#define prtfill(n, var)  cout << setw(n) << setfill('0') << var;
+#define prt2(v1, v2)     cout << v1 << "" "" << v2 << ""\n""
+#define prt3(v1, v2, v3) cout << v1 << "" "" << v2 << "" "" << v3 << ""\n""
+#define prtall(v)        rep(i,v.size()){cout<<v[i]<<(i!=v.size()-1?"" "":""\n"");}
+void prtok(bool ok){prt(ok ? ""Yes"" : ""No"");}
+//----------------------------------------------------------------
+
+int main(void) {
+  int a, b, c, d;
+  cin >> a >> b >> c >> d;
+
+  int ans=0;
+  rep(i,101){
+    if(a<i && i<=b && c<i && i<=d) ans++;
+  }
+  prt(ans);
+
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int a,b,c,d;
+    cin >> a >> b >> c >> d;
+    int L = max(a,c);
+    int R = min(b,d);
+    cout << max(0, R - L) << ""\n"";
+}",0
+"#include <iostream>
+#include <climits>
+#include <cmath>
+#include <algorithm>
+#include <vector>
+#include <map>
+#include <set>
+#include <queue>
+#include <string>
+#include <deque>
+#define INF_INT (INT_MAX / 2)
+#define INF_LONG (LONG_MAX / 2)
+//#define DEBUG true
+#define DEBUG false
+using namespace std;
+
+const int MAX = 100001;
+const int MOD = 1000000007;
+
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+typedef pair<ll, int> pli;
+typedef pair<int, ll> pil;
+
+int ceil(int x, int y) { return (x % y == 0) ? x / y : x / y + 1; }
+
+int gcd(int x, int y) { return y ? gcd(y, x % y) : x; }
+
+int lcm(int x, int y) { return x / gcd(x, y) * y; }
+
+int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(0);
+
+  int n, k;
+  cin >> n >> k;
+  vector< int > h(n);
+  for(int i = 0; i < n; i++){
+    cin >> h[i];
+  }
+
+  if(k >= n) {
+    cout << 0 << endl;
+    return 0;
+  }
+
+  sort(h.begin(), h.end());
+
+  ll ans = 0;
+  for(int i = 0; i < n - k; i++) {
+    ans += h[i];
+  }
+
+  cout << ans << endl;
+
+  return 0;
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, k;
+    cin >> n >> k;
+
+    vector<long long> h(n);
+    for(int i = 0; i < n; i++)
+        cin >> h[i];
+
+    if(k >= n){
+        cout << 0 << ""\n"";
+        return 0;
+    }
+
+    sort(h.begin(), h.end());
+
+    long long sum = 0;
+    for(int i = 0; i < n - k; i++)
+        sum += h[i];
+
+    cout << sum << ""\n"";
+    return 0;
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+
+int n, m;
+vector<vector<int>> a;
+vector<vector<int>> dp;
+int d[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
+
+int dfs(int x,int y){
+    if(dp[x][y]) return dp[x][y];
+    int best = 1;
+    for(auto &v:d){
+        int nx = x+v[0], ny = y+v[1];
+        if(nx>=0 && ny>=0 && nx<n && ny<m && a[nx][ny] > a[x][y])
+            best = max(best, 1 + dfs(nx, ny));
+    }
+    return dp[x][y] = best;
+}
+
+int main(){
+    cin >> n >> m;
+    a.assign(n, vector<int>(m));
+    dp.assign(n, vector<int>(m, 0));
+    
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
+            cin >> a[i][j];
+
+    int ans = 0;
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
+            ans = max(ans, dfs(i,j));
+
+    cout << ans << ""\n"";
+}","#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n,m;
+    cin >> n >> m;
+    vector<vector<int>> a(n, vector<int>(m));
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
+            cin >> a[i][j];
+
+    vector<vector<int>> out(n, vector<int>(m,0));
+    int d[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
+    queue<pair<int,int>> q;
+
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            for(auto &v:d){
+                int ni=i+v[0], nj=j+v[1];
+                if(ni>=0&&nj>=0&&ni<n&&nj<m && a[ni][nj]>a[i][j])
+                    out[i][j]++;
+            }
+            if(out[i][j]==0) q.push({i,j});
+        }
+    }
+
+    int path = 0;
+    while(!q.empty()){
+        path++;
+        int sz=q.size();
+        while(sz--){
+            auto [x,y]=q.front(); q.pop();
+            for(auto &v:d){
+                int nx=x+v[0], ny=y+v[1];
+                if(nx>=0&&ny>=0&&nx<n&&ny<m && a[nx][ny]<a[x][y]){
+                    out[nx][ny]--;
+                    if(out[nx][ny]==0) q.push({nx,ny});
+                }
+            }
+        }
+    }
+
+    cout << path << ""\n"";
+}",0
+"#include <bits/stdc++.h>
+using namespace std;
+long long fact_iter(int n){ long long r=1; for(int i=2;i<=n;i++) r*=i; return r; }
+int main(){ int n; if(!(cin>>n)) return 0; cout<<fact_iter(n); }
+","#include <bits/stdc++.h>
+using namespace std;
+long long fact_rec(int n){ if(n<=1) return 1; return n*fact_rec(n-1); }
+int main(){ int n; if(!(cin>>n)) return 0; cout<<fact_rec(n); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int fib_iter(int n){ if(n<=1) return n; int a=0,b=1; for(int i=2;i<=n;i++){ int c=a+b; a=b; b=c; } return b; }
+int main(){ int n; if(!(cin>>n)) return 0; cout<<fib_iter(n); }
+","#include <bits/stdc++.h>
+using namespace std;
+int fib_rec(int n){ if(n<=1) return n; return fib_rec(n-1)+fib_rec(n-2); }
+int main(){ int n; if(!(cin>>n)) return 0; cout<<fib_rec(n); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; long long s=0; for(int i=0;i<n;i++){ long long x; cin>>x; s+=x; } cout<<s; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<long long> a(n); for(int i=0;i<n;i++) cin>>a[i]; cout<<accumulate(a.begin(), a.end(), 0LL); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; int mx=INT_MIN; for(int i=0;i<n;i++){ int x; cin>>x; mx = max(mx,x); } cout<<mx; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; cout<<*max_element(a.begin(), a.end()); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; int mn=INT_MAX; for(int i=0;i<n;i++){ int x; cin>>x; mn = min(mn,x); } cout<<mn; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; cout<<*min_element(a.begin(), a.end()); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; // bubble sort
+ for(int i=0;i<n;i++) for(int j=0;j+1<n;j++) if(a[j]>a[j+1]) swap(a[j],a[j+1]); for(int x:a) cout<<x<<' '; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; sort(a.begin(), a.end()); for(int x:a) cout<<x<<' '; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; // selection sort
+ for(int i=0;i<n-1;i++){ int idx=i; for(int j=i+1;j<n;j++) if(a[j]<a[idx]) idx=j; swap(a[i], a[idx]); } for(int x:a) cout<<x<<' '; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; stable_sort(a.begin(), a.end()); for(int x:a) cout<<x<<' '; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); string out=""""; for(int i=(int)s.size()-1;i>=0;i--) out.push_back(s[i]); cout<<out; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); reverse(s.begin(), s.end()); cout<<s; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); int i=0,j=s.size()-1; bool ok=true; while(i<j){ if(s[i++]!=s[j--]){ ok=false; break; } } cout<<(ok?1:0); }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); string t=s; reverse(t.begin(), t.end()); cout<<(s==t?1:0); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int gcd_brut(int a,int b){ int g=1; for(int i=1;i<=min(a,b);i++) if(a%i==0 && b%i==0) g=i; return g; }
+int main(){ int a,b; if(!(cin>>a>>b)) return 0; cout<<gcd_brut(a,b); }
+","#include <bits/stdc++.h>
+using namespace std;
+int gcd_euclid(int a,int b){ return b==0? a : gcd_euclid(b, a%b); }
+int main(){ int a,b; if(!(cin>>a>>b)) return 0; cout<<gcd_euclid(a,b); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int a,b; if(!(cin>>a>>b)) return 0; long long l=1; for(long long i=1;i<= (long long)a*b; ++i) if(i%a==0 && i%b==0){ l=i; break; } cout<<l; }
+","#include <bits/stdc++.h>
+using namespace std;
+int gcd(int a,int b){ return b?gcd(b,a%b):a; }
+int main(){ int a,b; if(!(cin>>a>>b)) return 0; cout<<(1LL*a*b)/gcd(a,b); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+bool isprime_trial(long long n){ if(n<2) return false; for(long long i=2;i*i<=n;i++) if(n%i==0) return false; return true; }
+int main(){ long long n; if(!(cin>>n)) return 0; cout<<(isprime_trial(n)?1:0); }
+","#include <bits/stdc++.h>
+using namespace std;
+bool isprime_skip(long long n){ if(n<2) return false; if(n%2==0) return n==2; for(long long i=3;i*i<=n;i+=2) if(n%i==0) return false; return true; }
+int main(){ long long n; if(!(cin>>n)) return 0; cout<<(isprime_skip(n)?1:0); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!(cin>>s)) return 0; int cnt=0; for(char c:s) if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u') cnt++; cout<<cnt; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!(cin>>s)) return 0; unordered_set<char> v={'a','e','i','o','u'}; int cnt=0; for(char c:s) if(v.count(c)) cnt++; cout<<cnt; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); int words=0; istringstream iss(s); string w; while(iss>>w) words++; cout<<words; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); int words=0; bool in=false; for(char c:s){ if(isspace(c)){ in=false; } else if(!in){ in=true; words++; } } cout<<words; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; long long sum=0; for(int x:a) sum+=x; cout<<sum; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<long long>a(n); for(int i=0;i<n;i++) cin>>a[i]; cout<<accumulate(a.begin(), a.end(), 0LL); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int cnt=0; for(int i=1;i<n;i++) if(a[i]<a[i-1]) { cnt=1; break; } cout<< (cnt?0:1); }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; cout<<(is_sorted(a.begin(), a.end())?1:0); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!(cin>>s)) return 0; set<char> st; for(char c:s) st.insert(c); cout<<st.size(); }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!(cin>>s)) return 0; vector<int> freq(256); for(char c:s) freq[(unsigned char)c]++; int cnt=0; for(int x:freq) if(x) cnt++; cout<<cnt; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); string t=""""; for(char c:s) if(c!=' ') t.push_back(c); cout<<t; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); s.erase(remove(s.begin(), s.end(), ' '), s.end()); cout<<s; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int idx=-1; for(int i=0;i<n;i++) if(a[i]<0){ idx=i; break; } cout<<idx; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; auto it=find_if(a.begin(), a.end(), [](int x){ return x<0; }); if(it==a.end()) cout<<-1; else cout<<distance(a.begin(), it); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; long long r=1; for(int i=1;i<=n;i++) r*=i; cout<<r; }
+","#include <bits/stdc++.h>
+using namespace std;
+long long fact_iter2(int n){ long long r=1; for(int i=2;i<=n;i++) r*=i; return r; }
+int main(){ int n; if(!(cin>>n)) return 0; cout<<fact_iter2(n); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; int a[n]; for(int i=0;i<n;i++) cin>>a[i]; for(int i=0;i<n;i++) for(int j=0;j<n;j++) if(a[i]<a[j]) swap(a[i],a[j]); for(int x:a) cout<<x<<' '; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; sort(a.begin(), a.end()); for(int x:a) cout<<x<<' '; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// count pairs with sum S - naive
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int S; cin>>S; int cnt=0; for(int i=0;i<n;i++) for(int j=i+1;j<n;j++) if(a[i]+a[j]==S) cnt++; cout<<cnt; }
+","#include <bits/stdc++.h>
+using namespace std;
+// count pairs with sum S - hashmap
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int S; cin>>S; unordered_map<int,int> m; int cnt=0; for(int x:a){ cnt += m[S-x]; m[x]++; } cout<<cnt; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ long long x; if(!(cin>>x)) return 0; int c=0; while(x){ c += x%10; x/=10; } cout<<c; }
+","#include <bits/stdc++.h>
+using namespace std;
+int sumdig(long long x){ if(x==0) return 0; return x%10 + sumdig(x/10); }
+int main(){ long long x; if(!(cin>>x)) return 0; cout<<sumdig(x); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; for(int i=0;i<n;i++) cout<<a[i]<<' '; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; for(int i=0;i<n;i++){ int x; cin>>x; cout<<x<<' '; } }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int s=0; for(int x:a) s+=x; cout<<s; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int n; if(!(cin>>n)) return 0; long long s=0; for(int i=0;i<n;i++){ int x; cin>>x; s += x; } cout<<s; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ int r,c; if(!(cin>>r>>c)) return 0; vector<vector<int>> A(r, vector<int>(c)); for(int i=0;i<r;i++) for(int j=0;j<c;j++) cin>>A[i][j]; for(int j=0;j<c;j++){ for(int i=0;i<r;i++) cout<<A[i][j]<<' '; cout<<""\n""; } }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ int r,c; if(!(cin>>r>>c)) return 0; vector<vector<int>> A(r, vector<int>(c)); for(int i=0;i<r;i++) for(int j=0;j<c;j++) cin>>A[i][j]; for(int i=0;i<r;i++){ for(int j=0;j<c;j++) cout<<A[j][i]<<' '; cout<<""\n""; } }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); int cnt=0; for(char c:s) if(isdigit(c)) cnt++; cout<<cnt; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); int cnt=0; for(char c:s) if(c>='0' && c<='9') cnt++; cout<<cnt; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// reverse words order
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); istringstream iss(s); vector<string> w; string t; while(iss>>t) w.push_back(t); for(int i=w.size()-1;i>=0;i--){ if(i!=(int)w.size()-1) cout<<' '; cout<<w[i]; } }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); string out="""", cur=""""; for(int i=s.size()-1;i>=0;i--){ if(s[i]==' '){ if(!cur.empty()){ if(!out.empty()) out += ' '; reverse(cur.begin(), cur.end()); out += cur; cur.clear(); } } else cur.push_back(s[i]); } if(!cur.empty()){ if(!out.empty()) out += ' '; reverse(cur.begin(), cur.end()); out += cur; } cout<<out; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); for(char &c:s) if(c>='A' && c<='Z') c = c - 'A' + 'a'; cout<<s; }
+","#include <bits/stdc++.h>
+using namespace std;
+int main(){ string s; if(!getline(cin,s)) return 0; if(s.size()==0) getline(cin,s); transform(s.begin(), s.end(), s.begin(), ::tolower); cout<<s; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// binary search - iterative
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int target; cin>>target; int l=0,r=n-1,idx=-1; while(l<=r){ int m=(l+r)/2; if(a[m]==target){ idx=m; break; } else if(a[m]<target) l=m+1; else r=m-1; } cout<<idx; }
+","#include <bits/stdc++.h>
+using namespace std;
+// binary search - STL
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int target; cin>>target; auto it=lower_bound(a.begin(),a.end(),target); if(it!=a.end() && *it==target) cout<<distance(a.begin(),it); else cout<<-1; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// power - iterative
+int main(){ long long base,exp; if(!(cin>>base>>exp)) return 0; long long res=1; for(int i=0;i<exp;i++) res*=base; cout<<res; }
+","#include <bits/stdc++.h>
+using namespace std;
+// power - recursive
+long long power(long long b,long long e){ if(e==0) return 1; return b*power(b,e-1); }
+int main(){ long long base,exp; if(!(cin>>base>>exp)) return 0; cout<<power(base,exp); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// check if array has duplicates - nested loop
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; bool dup=false; for(int i=0;i<n && !dup;i++) for(int j=i+1;j<n;j++) if(a[i]==a[j]){ dup=true; break; } cout<<(dup?1:0); }
+","#include <bits/stdc++.h>
+using namespace std;
+// check if array has duplicates - set
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; set<int>s(a.begin(),a.end()); cout<<(s.size()!=a.size()?1:0); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// median of array - sorting
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; sort(a.begin(),a.end()); if(n%2==1) cout<<a[n/2]; else cout<<(a[n/2-1]+a[n/2])/2; }
+","#include <bits/stdc++.h>
+using namespace std;
+// median of array - nth_element
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; nth_element(a.begin(),a.begin()+n/2,a.end()); if(n%2==1) cout<<a[n/2]; else{ nth_element(a.begin(),a.begin()+n/2-1,a.end()); cout<<(a[n/2-1]+a[n/2])/2; } }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// find second largest - two pass
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int mx=*max_element(a.begin(),a.end()); int sec=INT_MIN; for(int x:a) if(x<mx && x>sec) sec=x; cout<<sec; }
+","#include <bits/stdc++.h>
+using namespace std;
+// find second largest - single pass
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int mx=INT_MIN,sec=INT_MIN; for(int x:a){ if(x>mx){ sec=mx; mx=x; } else if(x>sec && x<mx) sec=x; } cout<<sec; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// longest common prefix - vertical scan
+int main(){ int n; if(!(cin>>n)) return 0; vector<string>strs(n); for(int i=0;i<n;i++) cin>>strs[i]; string pre=""""; for(int j=0;j<strs[0].size();j++){ char c=strs[0][j]; bool ok=true; for(int i=1;i<n;i++) if(j>=strs[i].size() || strs[i][j]!=c){ ok=false; break; } if(!ok) break; pre+=c; } cout<<pre; }
+","#include <bits/stdc++.h>
+using namespace std;
+// longest common prefix - horizontal scan
+int main(){ int n; if(!(cin>>n)) return 0; vector<string>strs(n); for(int i=0;i<n;i++) cin>>strs[i]; string pre=strs[0]; for(int i=1;i<n;i++){ int j=0; while(j<pre.size() && j<strs[i].size() && pre[j]==strs[i][j]) j++; pre=pre.substr(0,j); } cout<<pre; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// merge two sorted arrays - manual
+int main(){ int n,m; if(!(cin>>n>>m)) return 0; vector<int>a(n),b(m); for(int i=0;i<n;i++) cin>>a[i]; for(int i=0;i<m;i++) cin>>b[i]; vector<int>c; int i=0,j=0; while(i<n && j<m){ if(a[i]<=b[j]) c.push_back(a[i++]); else c.push_back(b[j++]); } while(i<n) c.push_back(a[i++]); while(j<m) c.push_back(b[j++]); for(int x:c) cout<<x<<' '; }
+","#include <bits/stdc++.h>
+using namespace std;
+// merge two sorted arrays - STL merge
+int main(){ int n,m; if(!(cin>>n>>m)) return 0; vector<int>a(n),b(m); for(int i=0;i<n;i++) cin>>a[i]; for(int i=0;i<m;i++) cin>>b[i]; vector<int>c(n+m); merge(a.begin(),a.end(),b.begin(),b.end(),c.begin()); for(int x:c) cout<<x<<' '; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// rotate array left by k - temp array
+int main(){ int n,k; if(!(cin>>n>>k)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; k%=n; vector<int>temp(a.begin()+k,a.end()); temp.insert(temp.end(),a.begin(),a.begin()+k); for(int x:temp) cout<<x<<' '; }
+","#include <bits/stdc++.h>
+using namespace std;
+// rotate array left by k - STL rotate
+int main(){ int n,k; if(!(cin>>n>>k)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; k%=n; rotate(a.begin(),a.begin()+k,a.end()); for(int x:a) cout<<x<<' '; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// anagram check - sorting
+int main(){ string s1,s2; if(!(cin>>s1>>s2)) return 0; sort(s1.begin(),s1.end()); sort(s2.begin(),s2.end()); cout<<(s1==s2?1:0); }
+","#include <bits/stdc++.h>
+using namespace std;
+// anagram check - frequency count
+int main(){ string s1,s2; if(!(cin>>s1>>s2)) return 0; if(s1.size()!=s2.size()){ cout<<0; return 0; } vector<int>freq(256,0); for(char c:s1) freq[c]++; for(char c:s2) freq[c]--; for(int f:freq) if(f!=0){ cout<<0; return 0; } cout<<1; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// remove duplicates from sorted array - two pointers
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; if(n==0) return 0; int j=0; for(int i=1;i<n;i++) if(a[i]!=a[j]) a[++j]=a[i]; for(int i=0;i<=j;i++) cout<<a[i]<<' '; }
+","#include <bits/stdc++.h>
+using namespace std;
+// remove duplicates from sorted array - STL unique
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; auto it=unique(a.begin(),a.end()); for(auto i=a.begin();i!=it;i++) cout<<*i<<' '; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// string to integer - manual
+int main(){ string s; if(!(cin>>s)) return 0; int num=0,sign=1,i=0; if(s[0]=='-'){ sign=-1; i=1; } for(;i<s.size();i++) num=num*10+(s[i]-'0'); cout<<sign*num; }
+","#include <bits/stdc++.h>
+using namespace std;
+// string to integer - STL stoi
+int main(){ string s; if(!(cin>>s)) return 0; cout<<stoi(s); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// count frequency of each element - map
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; map<int,int>freq; for(int x:a) freq[x]++; for(auto p:freq) cout<<p.first<<':'<<p.second<<' '; }
+","#include <bits/stdc++.h>
+using namespace std;
+// count frequency of each element - sort and count
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; sort(a.begin(),a.end()); for(int i=0;i<n;){ int cnt=1,val=a[i]; while(i+cnt<n && a[i+cnt]==val) cnt++; cout<<val<<':'<<cnt<<' '; i+=cnt; } }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// matrix multiplication - nested loops
+int main(){ int n; if(!(cin>>n)) return 0; vector<vector<int>>A(n,vector<int>(n)),B(n,vector<int>(n)),C(n,vector<int>(n,0)); for(int i=0;i<n;i++) for(int j=0;j<n;j++) cin>>A[i][j]; for(int i=0;i<n;i++) for(int j=0;j<n;j++) cin>>B[i][j]; for(int i=0;i<n;i++) for(int j=0;j<n;j++) for(int k=0;k<n;k++) C[i][j]+=A[i][k]*B[k][j]; for(int i=0;i<n;i++){ for(int j=0;j<n;j++) cout<<C[i][j]<<' '; cout<<""\n""; } }
+","#include <bits/stdc++.h>
+using namespace std;
+// matrix multiplication - optimized cache
+int main(){ int n; if(!(cin>>n)) return 0; vector<vector<int>>A(n,vector<int>(n)),B(n,vector<int>(n)),C(n,vector<int>(n,0)); for(int i=0;i<n;i++) for(int j=0;j<n;j++) cin>>A[i][j]; for(int i=0;i<n;i++) for(int j=0;j<n;j++) cin>>B[i][j]; for(int i=0;i<n;i++) for(int k=0;k<n;k++) for(int j=0;j<n;j++) C[i][j]+=A[i][k]*B[k][j]; for(int i=0;i<n;i++){ for(int j=0;j<n;j++) cout<<C[i][j]<<' '; cout<<""\n""; } }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// find missing number in 1 to n - sum formula
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n-1); for(int i=0;i<n-1;i++) cin>>a[i]; long long expected=1LL*n*(n+1)/2; long long actual=0; for(int x:a) actual+=x; cout<<expected-actual; }
+","#include <bits/stdc++.h>
+using namespace std;
+// find missing number in 1 to n - XOR
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n-1); for(int i=0;i<n-1;i++) cin>>a[i]; int xor_all=0,xor_arr=0; for(int i=1;i<=n;i++) xor_all^=i; for(int x:a) xor_arr^=x; cout<<(xor_all^xor_arr); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// subarray with given sum - nested loops
+int main(){ int n,target; if(!(cin>>n>>target)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; for(int i=0;i<n;i++){ int sum=0; for(int j=i;j<n;j++){ sum+=a[j]; if(sum==target){ cout<<i<<' '<<j; return 0; } } } cout<<-1; }
+","#include <bits/stdc++.h>
+using namespace std;
+// subarray with given sum - sliding window
+int main(){ int n,target; if(!(cin>>n>>target)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int sum=0,start=0; for(int end=0;end<n;end++){ sum+=a[end]; while(sum>target && start<=end) sum-=a[start++]; if(sum==target){ cout<<start<<' '<<end; return 0; } } cout<<-1; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// kadane's algorithm - DP array
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; vector<int>dp(n); dp[0]=a[0]; int maxSum=dp[0]; for(int i=1;i<n;i++){ dp[i]=max(a[i],dp[i-1]+a[i]); maxSum=max(maxSum,dp[i]); } cout<<maxSum; }
+","#include <bits/stdc++.h>
+using namespace std;
+// kadane's algorithm - optimized space
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; int maxEnd=a[0],maxSum=a[0]; for(int i=1;i<n;i++){ maxEnd=max(a[i],maxEnd+a[i]); maxSum=max(maxSum,maxEnd); } cout<<maxSum; }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// string compression - manual
+int main(){ string s; if(!(cin>>s)) return 0; string res=""""; int i=0; while(i<s.size()){ char c=s[i]; int cnt=0; while(i<s.size() && s[i]==c){ cnt++; i++; } res+=c; res+=to_string(cnt); } cout<<res; }
+","#include <bits/stdc++.h>
+using namespace std;
+// string compression - stringstream
+int main(){ string s; if(!(cin>>s)) return 0; stringstream ss; int i=0; while(i<s.size()){ char c=s[i]; int cnt=0; while(i<s.size() && s[i]==c){ cnt++; i++; } ss<<c<<cnt; } cout<<ss.str(); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// check perfect square - linear search
+int main(){ long long n; if(!(cin>>n)) return 0; for(long long i=0;i*i<=n;i++) if(i*i==n){ cout<<1; return 0; } cout<<0; }
+","#include <bits/stdc++.h>
+using namespace std;
+// check perfect square - sqrt
+int main(){ long long n; if(!(cin>>n)) return 0; long long sq=(long long)sqrt(n); cout<<(sq*sq==n?1:0); }
+",0
+"#include <bits/stdc++.h>
+using namespace std;
+// quicksort partition - manual
+void quicksort(vector<int>&a,int l,int r){ if(l>=r) return; int p=a[r],i=l-1; for(int j=l;j<r;j++) if(a[j]<=p) swap(a[++i],a[j]); swap(a[++i],a[r]); quicksort(a,l,i-1); quicksort(a,i+1,r); }
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; quicksort(a,0,n-1); for(int x:a) cout<<x<<' '; }","#include <bits/stdc++.h>
+using namespace std;
+// insertion sort
+int main(){ int n; if(!(cin>>n)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; for(int i=1;i<n;i++){ int key=a[i],j=i-1; while(j>=0 && a[j]>key){ a[j+1]=a[j]; j--; } a[j+1]=key; } for(int x:a) cout<<x<<' '; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+// linear search
+int main(){ int n,target; if(!(cin>>n>>target)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; for(int i=0;i<n;i++) if(a[i]==target){ cout<<i; return 0; } cout<<-1; }","#include <bits/stdc++.h>
+using namespace std;
+// find using STL
+int main(){ int n,target; if(!(cin>>n>>target)) return 0; vector<int>a(n); for(int i=0;i<n;i++) cin>>a[i]; auto it=find(a.begin(),a.end(),target); if(it!=a.end()) cout<<distance(a.begin(),it); else cout<<-1; }",0
+"#include <bits/stdc++.h>
+using namespace std;
+// count set bits - loop
+int main(){ int n; if(!(cin>>n)) return 0; int cnt=0; while(n){ cnt+=n&1; n>>=1; } cout<<cnt; }","#include <bits/stdc++.h>
+using namespace std;
+// count set bits - builtin
+int main(){ int n; if(!(cin>>n)) return 0; cout<<__builtin_popcount(n); }",0
