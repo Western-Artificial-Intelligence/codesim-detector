@@ -10,6 +10,8 @@ import time
 from typing import Any
 from difflib import SequenceMatcher
 from tqdm import tqdm
+from pathlib import Path
+import glob
 
 # Inputs
 inputs = [
@@ -316,9 +318,46 @@ def process(df: pd.DataFrame) -> pd.DataFrame:
 if __name__ == "__main__":
     # Read from parquet
     parquetFile = "data/train.parquet"
+    if not Path.exists(parquetFile):
+        raise FileNotFoundError("Parquet File was not found")
+
     df = pd.read_parquet(parquetFile)
-    
-    startTime = time.time()
-    df_processed = process(df.head(50))
-    print(df_processed.head(20))
-    print("Time taken", time.time() - startTime)
+
+    # Save file for checkpoints
+    saveFile = "checkpoint.json"
+    if not Path.exists(stateSave):
+        start = 0
+    else:
+        start = json.load(open(saveFile))["checkpoint"]
+
+    checkpointSize = 50 
+
+    df = df.iloc[start * checkpointSize:]
+
+
+    for i in range(start*checkpointSize, int(len(df) / checkpointSize) + 1):
+        # Take the batch
+        startIndex = i * checkpointSize
+        endIndex = (i+1) * checkpointSize
+
+        # Process the batch of output sim scores
+        df_processed = process(df.iloc[startIndex:endIndex])
+        print ("HEAD", df_processed.head(10))
+        print("TAIL", df_processed.tail(10))
+
+        # Checkpoint the processing
+        state = {
+            "checkpoint": i,
+        }
+
+        # Save the checkpoint
+        json.dump(state, open(saveFile, "w"))
+        df_processed.to_parquet(f"checkpoints/chunk_{start + i}.parquet")
+
+    # All checkpoint files
+    files = glob.glob("checkpoints/chunk_*.parquet")
+    sortedFiles = sorted(files, key=lambda x: int(x.split("_")[-1].split(".")[0]))
+
+    # Read all checkpoints into one df
+    fullDf = pd.concat([pd.read_parquet(f) for f in sortedFiles])
+    fullDf.to_csv("csv_data/combined_scores.csv", index=False)
