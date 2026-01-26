@@ -43,8 +43,12 @@ def process_training_data(df: pd.DataFrame) -> pd.DataFrame:
     df['token_similarity'] = df.apply(lambda row: compute_cosine_similarity(row['code1'], row['code2']), axis=1)
     return df
 
+def save_token_similarity(df: pd.DataFrame, output_path: str) -> None:
+    df.to_csv(output_path, index=False)
+
 if __name__ == "__main__":
 
-    df = pd.read_csv("csv_data/sample_train.csv")
-    df_processed = process_training_data(df[['code1', 'code2', 'similar']])
+    df = pd.read_parquet("data/train.parquet")
+    df_processed = process_training_data(df)
     print(df_processed.head(10))
+    save_token_similarity(df_processed, "csv_data/combined_scores.csv")
