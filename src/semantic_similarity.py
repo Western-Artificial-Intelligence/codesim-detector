@@ -155,7 +155,7 @@ def compute_embedding(codes: Iterable[str], batch_size: int = 32, max_length: in
 def compute_semantic_similarity(vec1, vec2):
 
     # for 1d scalars
-    if vec1.ndim == 1 and vec2.dim == 1:
+    if vec1.ndim == 1 and vec2.ndim == 1:
         v1 = vec1.astype(np.float32)
         v2 = vec2.astype(np.float32)
 
