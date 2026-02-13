@@ -1,33 +1,56 @@
 # import necessary libraries
-import pandas as pd
 import re
+from pathlib import Path
+
+import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
 
 # function to compute cosine similarity between two code snippets
 def compute_cosine_similarity(code1, code2) -> float:
 
     # Remove comments
-    code1 = re.sub(r'//.*?$|/\*.*?\*/', '', code1, flags=re.DOTALL | re.MULTILINE)
-    code2 = re.sub(r'//.*?$|/\*.*?\*/', '', code2, flags=re.DOTALL | re.MULTILINE)
+    code1 = re.sub(r"//.*?$|/\*.*?\*/", "", code1, flags=re.DOTALL | re.MULTILINE)
+    code2 = re.sub(r"//.*?$|/\*.*?\*/", "", code2, flags=re.DOTALL | re.MULTILINE)
 
     # Remove whitespace
-    code1 = re.sub(r'\s+', ' ', code1).strip()
-    code2 = re.sub(r'\s+', ' ', code2).strip()
+    code1 = re.sub(r"\s+", " ", code1).strip()
+    code2 = re.sub(r"\s+", " ", code2).strip()
 
     # Define custom token pattern for code
     tokenPattern = ""
     tokenPattern += r"[A-Za-z_][A-Za-z0-9_]*"  # Identifiers
-    tokenPattern += r"|\d+"                     # Numbers
+    tokenPattern += r"|\d+"  # Numbers
     tokenPattern += r"|==|!=|<=|>=|\+=|-=|\*=|/=|&&|\|\|"  # Multi-char operators
     tokenPattern += r"|\".*?\"|\'.*?\'"  # String literals
     tokenPattern += r"|[{}()\[\];=+\-*/<>!&|]"  # Single-char operators and punctuation
-    
+
     # Define stop words common in code
-    stopWords = ["include", "namespace", "using", "std", "return", "cin", "cout", "int", "float", "double", "string", "bool", "endl"]
-    
+    stopWords = [
+        "include",
+        "namespace",
+        "using",
+        "std",
+        "return",
+        "cin",
+        "cout",
+        "int",
+        "float",
+        "double",
+        "string",
+        "bool",
+        "endl",
+    ]
+
     # Compute TF-IDF vectors
-    vectorizer = TfidfVectorizer(token_pattern=tokenPattern, ngram_range=(1, 2), stop_words=stopWords, norm='l2', sublinear_tf=True)
+    vectorizer = TfidfVectorizer(
+        token_pattern=tokenPattern,
+        ngram_range=(1, 2),
+        stop_words=stopWords,
+        norm="l2",
+        sublinear_tf=True,
+    )
     tfidfMatrix = vectorizer.fit_transform([code1, code2])
 
     # Compute cosine similarity
@@ -37,14 +60,26 @@ def compute_cosine_similarity(code1, code2) -> float:
     # Return similarity value
     return similarityValue
 
+
 # function to process training data and compute similarity for each pair
 def process_training_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
-    df['token_similarity'] = df.apply(lambda row: compute_cosine_similarity(row['code1'], row['code2']), axis=1)
+    df["token_similarity"] = df.apply(
+        lambda row: compute_cosine_similarity(row["code1"], row["code2"]), axis=1
+    )
     return df
 
+
 def save_token_similarity(df: pd.DataFrame, output_path: str) -> None:
-    df.to_csv(output_path, index=False)
+    # If the file does not exist, write a new one
+    if not Path(output_path).exists():
+        df.to_csv(output_path, index=False)
+    # If the file exists  add a new column
+    else:
+        new_df = pd.read_csv(output_path)
+        new_df["token_similarity"] = df["token_similarity"]
+        new_df.to_csv(output_path, index=False)
+
 
 if __name__ == "__main__":
 
@@ -52,3 +87,4 @@ if __name__ == "__main__":
     df_processed = process_training_data(df)
     print(df_processed.head(10))
     save_token_similarity(df_processed, "csv_data/combined_scores.csv")
+

@@ -1,18 +1,27 @@
 import os
+from operator import index
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
-from tree_sitter_languages import get_parser, get_language
-from transformers import RobertaTokenizer, RobertaModel
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
-from sklearn.metrics import roc_auc_score
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
+from transformers import RobertaModel, RobertaTokenizer
+from tree_sitter_language_pack import get_language, get_parser
+
 
 def extract_functions(code, parser):
     tree = parser.parse(bytes(code, "utf8"))
     root = tree.root_node
-    
+
     functions = []
 
     def traverse(node):
@@ -28,6 +37,7 @@ def extract_functions(code, parser):
     traverse(root)
     return functions
 
+
 def smart_chunk_code_with_lengths(code, tokenizer, parser, min_tokens=20):
     functions = extract_functions(code, parser)
     final_chunks, lengths = [], []
@@ -41,22 +51,19 @@ def smart_chunk_code_with_lengths(code, tokenizer, parser, min_tokens=20):
             lengths.append(len(tokens))
         else:
             for i in range(0, len(tokens), 200):
-                chunk = tokens[i:i+400]
+                chunk = tokens[i : i + 400]
                 if len(chunk) < min_tokens:
                     continue
                 final_chunks.append(tokenizer.convert_tokens_to_string(chunk))
                 lengths.append(len(chunk))
     return final_chunks, lengths
 
+
 def encode_chunks(chunks, tokenizer, encoder, device="cuda"):
     if len(chunks) == 0:
         return None
     encoded = tokenizer(
-        chunks,
-        padding=True,
-        truncation=True,
-        max_length=512,
-        return_tensors="pt"
+        chunks, padding=True, truncation=True, max_length=512, return_tensors="pt"
     ).to(device)
 
     outputs = encoder(**encoded)
@@ -71,10 +78,12 @@ def similarity_matrix(A, B):
     B = F.normalize(B, dim=1)
     return torch.mm(A, B.T)  # (n, m)
 
+
 def aggregate_topk(sim_matrix, k=3):
     flat = sim_matrix.view(-1)
     topk = torch.topk(flat, min(k, len(flat))).values
-    return (torch.mean(topk) + 1)/2.0
+    return (torch.mean(topk) + 1) / 2.0
+
 
 def softmax_weighted_aggregate(sim_matrix, temperature=0.45):
     """
@@ -94,7 +103,10 @@ def softmax_weighted_aggregate(sim_matrix, temperature=0.45):
 
     return score
 
-def train_step(code1, code2, label, optimizer, encoder, tokenizer, parser, device="cuda"):
+
+def train_step(
+    code1, code2, label, optimizer, encoder, tokenizer, parser, device="cuda"
+):
     encoder.train()
 
     chunks1, _ = smart_chunk_code_with_lengths(code1, tokenizer, parser)
@@ -117,6 +129,7 @@ def train_step(code1, code2, label, optimizer, encoder, tokenizer, parser, devic
     optimizer.step()
 
     return loss.item()
+
 
 def validate(encoder, val_df, tokenizer, parser, device="cuda", temperature=0.45):
     encoder.eval()
@@ -143,29 +156,32 @@ def validate(encoder, val_df, tokenizer, parser, device="cuda", temperature=0.45
 
     return preds, labels
 
-def train_model(train_df, val_df, tokenizer, parser, epochs=3, lr=2e-5, device=None, temperature=0.4):
+
+def train_model(
+    train_df, val_df, tokenizer, parser, epochs=3, lr=2e-5, device=None, temperature=0.4
+):
     """
     Train the GraphCodeBERT encoder on code similarity task.
-    
+
     Args:
         train_df: Training dataframe with columns 'code1', 'code2', 'similar'
         val_df: Validation dataframe with same columns
         epochs: Number of training epochs (default: 3)
         lr: Learning rate (default: 2e-5)
         device: Device to use ('cuda', 'cpu', or None for auto-detect)
-    
+
     Returns:
         encoder: Trained model
         history: Dictionary with training loss and validation AUC per epoch
     """
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
-    
+
     encoder = RobertaModel.from_pretrained("microsoft/graphcodebert-base").to(device)
     optimizer = optim.AdamW(encoder.parameters(), lr=lr)
-    
+
     history = {"train_loss": [], "val_auc": []}
-    
+
     for epoch in range(epochs):
         total_loss = 0
         count = 0
@@ -191,30 +207,45 @@ def train_model(train_df, val_df, tokenizer, parser, epochs=3, lr=2e-5, device=N
         print(f"Epoch {epoch+1}: Train Loss = {avg_loss:.4f}")
 
         # --- Validation ---
-        preds, labels = validate(encoder, val_df, tokenizer, parser, device=device, temperature=temperature)
+        preds, labels = validate(
+            encoder, val_df, tokenizer, parser, device=device, temperature=temperature
+        )
         auc = roc_auc_score(labels, preds)
         history["val_auc"].append(auc)
         print(f"Epoch {epoch+1}: Validation ROC-AUC = {auc:.4f}")
-    
+
     return encoder, history
+
 
 def save_model(encoder, filepath="model/graphcodebert_mil_finetuned.pt"):
     torch.save(encoder.state_dict(), filepath)
     print(f"Model saved to {filepath}")
 
+
 def load_model(filepath="model/graphcodebert_mil_finetuned.pt", device=None):
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
-    
+
     encoder = RobertaModel.from_pretrained("microsoft/graphcodebert-base")
     encoder.load_state_dict(torch.load(filepath, map_location=device))
     encoder.to(device)
     encoder.eval()
     print(f"Model loaded from {filepath} on {device}")
-    
+
     return encoder
 
-def predict_similarity(code1, code2, encoder, tokenizer, parser, device, agg="softmax", temperature=0.45, topk=3):
+
+def predict_similarity(
+    code1,
+    code2,
+    encoder,
+    tokenizer,
+    parser,
+    device,
+    agg="softmax",
+    temperature=0.45,
+    topk=3,
+):
     encoder.eval()
 
     with torch.no_grad():
@@ -234,6 +265,7 @@ def predict_similarity(code1, code2, encoder, tokenizer, parser, device, agg="so
         elif agg == "softmax":
             score = softmax_weighted_aggregate(sim_matrix, temperature=temperature)
         return score.item()
+
 
 def get_evaluation_scores(
     encoder,
@@ -289,6 +321,7 @@ def get_evaluation_scores(
 
     return metrics
 
+
 def add_semantic_similarity_score_and_save(
     df,
     encoder,
@@ -296,7 +329,7 @@ def add_semantic_similarity_score_and_save(
     parser,
     output_csv_path,
     device=None,
-    score_col="semantic_similarity_score",
+    score_col="semantic_similarity",
     agg="softmax",
     temperature=0.45,
     topk=3,
@@ -334,21 +367,30 @@ def add_semantic_similarity_score_and_save(
                 print(f"Scored {i+1}/{len(df)} rows...")
 
     df_out = df.copy()
-    df_out[semantic_similarity_score] = scores
+    df_out["semantic_similarity"] = scores
 
     out_dir = os.path.dirname(output_csv_path)
     if out_dir:
         os.makedirs(out_dir, exist_ok=True)
 
-    df_out.to_csv(output_csv_path, index=False)
+    # Check if output file already exitsts
+    if not Path(output_csv_path).exists():
+        df_out.to_csv(output_csv_path, index=False)
+    # If does exist add to an existing col
+    else:
+        new_df = pd.read_csv(output_csv_path)
+        new_df["semantic_similarity"] = df_out["semantic_similarity"]
+        new_df.to_csv(output_csv_path, index=False)
+
     print(f"Saved scored dataframe to {output_csv_path}")
 
     return df_out
 
+
 if __name__ == "__main__":
 
-    train_df = pd.read_parquet('data/train.parquet')
-    val_df = pd.read_parquet('data/cross_validation.parquet')
+    train_df = pd.read_parquet("data/train.parquet")
+    val_df = pd.read_parquet("data/cross_validation.parquet")
 
     language = get_language("cpp")
     parser = get_parser("cpp")
@@ -356,9 +398,9 @@ if __name__ == "__main__":
     tokenizer = RobertaTokenizer.from_pretrained("microsoft/graphcodebert-base")
 
     # true only if you want to train the model
-    want_to_train = False
+    want_to_train = True
 
-    if want_to_train: # Train the model
+    if want_to_train:  # Train the model
 
         model_train_df = train_df.sample(n=1000, random_state=42)
         model_val_df = val_df.sample(n=200, random_state=42)
@@ -372,7 +414,7 @@ if __name__ == "__main__":
             lr=2e-5,
         )
         save_model(trained_encoder, filepath="model/graphcodebert_mil_finetuned.pt")
-    else:   # Load pre-trained model
+    else:  # Load pre-trained model
         trained_encoder = load_model(
             filepath="model/graphcodebert_mil_finetuned.pt",
             device="cuda" if torch.cuda.is_available() else "cpu",
@@ -396,4 +438,3 @@ if __name__ == "__main__":
         device="cuda" if torch.cuda.is_available() else "cpu",
         threshold=0.6,
     )
-    
