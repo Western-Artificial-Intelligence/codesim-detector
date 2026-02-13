@@ -1,17 +1,18 @@
+import ast
+import glob
+import json
+import math
+import os
 import subprocess
 import tempfile
-import os
-import pandas as pd
-import numpy as np
-import json
-import ast
-import math
 import time
-from typing import Any
 from difflib import SequenceMatcher
-from tqdm import tqdm
 from pathlib import Path
-import glob
+from typing import Any
+
+import numpy as np
+import pandas as pd
+from tqdm import tqdm
 
 # Inputs
 inputs = [
@@ -25,13 +26,15 @@ inputs = [
     "7\n100 150 200\n10 20 30 40 50 60 70\n",
     "4.5\n10.9\n2.3\n8.9\n18.49\n29.82\n22.22\n14.00\n6.89\n",
     "-8\n-12\n-5\n-11\n-4\n-2\n-32\n-450\n-20\n-89\n"
-    "apple\nbanana\ncat\ndog\nzebra\nalpha\nomega\ntest\nhello\nworld\n"
+    "apple\nbanana\ncat\ndog\nzebra\nalpha\nomega\ntest\nhello\nworld\n",
 ]
-inputs = [x.encode('utf-8') for x in inputs]
+inputs = [x.encode("utf-8") for x in inputs]
+
 
 # Compare String
 def _string_similarity(a: str, b: str) -> float:
     return SequenceMatcher(a=a, b=b).ratio()
+
 
 # Check if number
 def is_number(x):
@@ -42,29 +45,33 @@ def is_number(x):
     except:
         return False
 
+
 # Determine the similarity of 2 numbers
 def _numeric_similarity(out1: float, out2: float) -> float:
     if out1 == out2:
         return 1.0
     # NaN type
     elif math.isnan(out1) or math.isnan(out2):
-        if (math.isnan(out1) and not math.isnan(out2)) or (not math.isnan(out1) and math.isnan(out2)):
+        if (math.isnan(out1) and not math.isnan(out2)) or (
+            not math.isnan(out1) and math.isnan(out2)
+        ):
             return 0.0
         else:
             return 1.0
     # Large / infinite numbers
     elif math.isinf(out1) or math.isinf(out2):
-        if (math.isinf(out1) and not math.isinf(out2)) or (not math.isinf(out1) and math.isinf(out2)):
+        if (math.isinf(out1) and not math.isinf(out2)) or (
+            not math.isinf(out1) and math.isinf(out2)
+        ):
             return 0.0
         else:
             return 1.0
-
 
     # Find absolute distance between highest and smallest number
     out1 = abs(out1)
     out2 = abs(out2)
     highest = max(out1, out2)
-    
+
     # Avoid division by 0
     if highest == 0:
         highest = 0.1
@@ -76,6 +83,7 @@ def _numeric_similarity(out1: float, out2: float) -> float:
     # print(f"Normalized dist {out1} {out2} {normalizedDistance}")
     return normalizedDistance
 
+
 # Parse into json, list, or hash/dict
 def try_parse(s):
     # Try JSON
@@ -83,7 +91,7 @@ def try_parse(s):
         return json.loads(s)
     except:
         pass
-    
+
     # Try Python literal (e.g. "[1,2,3]" or "{'a': 2}")
     try:
         return ast.literal_eval(s)
@@ -94,10 +102,11 @@ def try_parse(s):
     try:
         if " " in s:
             return s.split()
-    except: 
+    except:
         pass
 
     return s
+
 
 # Compare lists
 def listSimilarity(output1: list, output2: list) -> float:
@@ -107,7 +116,7 @@ def listSimilarity(output1: list, output2: list) -> float:
         listLength = min(len(output1), len(output2))
         if listLength <= 0:
             return 0.0
-        
+
         outputScore = 0
         for i in range(0, listLength):
 
@@ -127,27 +136,29 @@ def listSimilarity(output1: list, output2: list) -> float:
                 outputScore += _numeric_similarity(float(o1), float(o2))
 
             # Nan Character
-            elif '\ufffd' in text1 or  '\ufffd' in text2:
-                if ('\ufffd' in text1 and '\ufffd' not in text2) or ('\ufffd' not in text1 and '\ufffd' in text2) :
+            elif "\ufffd" in text1 or "\ufffd" in text2:
+                if ("\ufffd" in text1 and "\ufffd" not in text2) or (
+                    "\ufffd" not in text1 and "\ufffd" in text2
+                ):
                     outputScore += 0.0
                 else:
                     outputScore += 1.0
-            
+
             else:
                 outputScore += _string_similarity(o1, o2)
 
         return outputScore / listLength
     except:
         return 0.0
-    
+
 
 # Compare None types
-def noneSim(out1: Any, out2: Any)-> float:
-    
+def noneSim(out1: Any, out2: Any) -> float:
+
     if (out1 == 0 and out2 is None) or (out2 == 0 and out1 is None):
         return 0.9
 
-    elif(out1 is None and out2 == '') or (out2 is None and out1 == ''):
+    elif (out1 is None and out2 == "") or (out2 is None and out1 == ""):
         return 0.9
 
     elif out1 is None and out2 is None:
@@ -155,6 +166,7 @@ def noneSim(out1: Any, out2: Any)-> float:
 
     else:
         return 0.0
+
 
 # Compare logic
 def compare(raw1: bytes, text1: str, raw2: bytes, text2: str) -> float:
@@ -171,11 +183,11 @@ def compare(raw1: bytes, text1: str, raw2: bytes, text2: str) -> float:
         # None type
         if text1 is None or text2 is None:
             return noneSim(text1, text2)
-                
+
         # List
         elif isinstance(text1, list) or isinstance(text2, list):
             return listSimilarity(text1, text2)
-        
+
         # Dict
         elif isinstance(text1, dict) or isinstance(text2, dict):
             return 1.0 if text1 == text2 else 0.0
@@ -185,8 +197,10 @@ def compare(raw1: bytes, text1: str, raw2: bytes, text2: str) -> float:
             return _numeric_similarity(float(text1), float(text2))
 
             # Nan Character
-        elif '\ufffd' in text1 or  '\ufffd' in text2:
-            if ('\ufffd' in text1 and '\ufffd' not in text2) or ('\ufffd' not in text1 and '\ufffd' in text2) :
+        elif "\ufffd" in text1 or "\ufffd" in text2:
+            if ("\ufffd" in text1 and "\ufffd" not in text2) or (
+                "\ufffd" not in text1 and "\ufffd" in text2
+            ):
                 return 0.0
             else:
                 return 1.0
@@ -196,8 +210,9 @@ def compare(raw1: bytes, text1: str, raw2: bytes, text2: str) -> float:
     except:
         return 0
 
+
 # Compile and run the cpp program pair
-def run (fName1: str, fName2: str, code1: str, code2: str, tmpdir) -> list:
+def run(fName1: str, fName2: str, code1: str, code2: str, tmpdir) -> list:
 
     try:
         # --- Write C++ file ---
@@ -217,7 +232,7 @@ def run (fName1: str, fName2: str, code1: str, code2: str, tmpdir) -> list:
             capture_output=False,
             stdin=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
-            check=False
+            check=False,
         )
         # --- Compile ---
         compile_proc2 = subprocess.run(
@@ -226,17 +241,19 @@ def run (fName1: str, fName2: str, code1: str, code2: str, tmpdir) -> list:
             capture_output=False,
             stdin=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
-            check=False
+            check=False,
         )
 
         # Compilation failed
-        if compile_proc1.returncode != 0 and compile_proc2.returncode !=0:
+        if compile_proc1.returncode != 0 and compile_proc2.returncode != 0:
             return 1
-        elif (compile_proc1.returncode != 0 and compile_proc2.returncode == 0) or ( compile_proc2.returncode != 0 and compile_proc1.returncode == 0):
+        elif (compile_proc1.returncode != 0 and compile_proc2.returncode == 0) or (
+            compile_proc2.returncode != 0 and compile_proc1.returncode == 0
+        ):
             return 0
 
         outputs = 0
-        # --- Run with series of inputs--- 
+        # --- Run with series of inputs---
         for input in inputs:
             # Run code 1
             try:
@@ -247,7 +264,7 @@ def run (fName1: str, fName2: str, code1: str, code2: str, tmpdir) -> list:
                     text=False,
                     check=True,
                     timeout=0.5,
-                    cwd=tmpdir
+                    cwd=tmpdir,
                 )
                 raw1 = out1.stdout
                 text1 = raw1.decode("utf-8", errors="replace").replace("\n", " ")
@@ -268,7 +285,7 @@ def run (fName1: str, fName2: str, code1: str, code2: str, tmpdir) -> list:
                     text=False,
                     check=True,
                     timeout=0.5,
-                    cwd=tmpdir
+                    cwd=tmpdir,
                 )
                 raw2 = out2.stdout
                 text2 = raw2.decode("utf-8", errors="replace").replace("\n", " ")
@@ -280,7 +297,7 @@ def run (fName1: str, fName2: str, code1: str, code2: str, tmpdir) -> list:
             except subprocess.TimeoutExpired as e:
                 raw2 = None
                 text2 = None
-            
+
             outputs += compare(raw1, text1, raw2, text2)
 
         score = round((outputs / len(inputs)), 2)
@@ -289,6 +306,7 @@ def run (fName1: str, fName2: str, code1: str, code2: str, tmpdir) -> list:
     except Exception as err:
         print(f"Error in file running {err}")
         return 0
+
 
 # Process each code pair in a pandas dataframe
 def process(df: pd.DataFrame) -> pd.DataFrame:
@@ -301,18 +319,19 @@ def process(df: pd.DataFrame) -> pd.DataFrame:
     results = np.zeros(n, dtype=float)
 
     # Run files in a sandboxed environment
-    with tempfile.TemporaryDirectory() as tmpdir:  
+    with tempfile.TemporaryDirectory() as tmpdir:
         for i in tqdm(range(0, n), desc="output similarity"):
             fName1 = os.path.join(tmpdir, f"prog_1.cpp")
             fName2 = os.path.join(tmpdir, f"prog_2.cpp")
-            code1 = df['code1'].iloc[i]
-            code2 =   df['code2'].iloc[i]
+            code1 = df["code1"].iloc[i]
+            code2 = df["code2"].iloc[i]
 
-            outputSim = run (fName1, fName2, code1, code2, tmpdir)
+            outputSim = run(fName1, fName2, code1, code2, tmpdir)
             results[i] = outputSim
 
     df["output_similarity"] = results
     return df
+
 
 # Main
 if __name__ == "__main__":
@@ -330,19 +349,18 @@ if __name__ == "__main__":
     else:
         start = json.load(open(saveFile))["checkpoint"]
 
-    checkpointSize = 50 
+    checkpointSize = 50
 
-    df = df.iloc[start * checkpointSize:]
+    df = df.iloc[start * checkpointSize :]
 
-
-    for i in range(start*checkpointSize, int(len(df) / checkpointSize) + 1):
+    for i in range(start * checkpointSize, int(len(df) / checkpointSize) + 1):
         # Take the batch
         startIndex = i * checkpointSize
-        endIndex = (i+1) * checkpointSize
+        endIndex = (i + 1) * checkpointSize
 
         # Process the batch of output sim scores
         df_processed = process(df.iloc[startIndex:endIndex])
-        print ("HEAD", df_processed.head(10))
+        print("HEAD", df_processed.head(10))
         print("TAIL", df_processed.tail(10))
 
         # Checkpoint the processing
@@ -360,4 +378,12 @@ if __name__ == "__main__":
 
     # Read all checkpoints into one df
     fullDf = pd.concat([pd.read_parquet(f) for f in sortedFiles])
-    fullDf.to_csv("csv_data/combined_scores.csv", index=False)
+    output_csv = "csv_data/combined_scores.csv"
+    # Check if already exists
+    if not Path(output_csv).exists():
+        fullDf.to_csv(output_csv, index=False)
+    # Add to existing
+    else:
+        new_df = pd.read_csv(output_csv)
+        new_df["output_similarity"] = fullDf["output_similarity"]
+        new_df.to_csv(output_csv, index=False)
