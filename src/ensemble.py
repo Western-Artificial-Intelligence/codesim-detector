@@ -1,14 +1,15 @@
 # import necessary libraries
+import argparse
 import os
 import sys
 import tempfile
+
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from sklearn.model_selection import train_test_split
-import pandas as pd
-import argparse
 
 # add src directory to path for sibling imports
 srcDir = os.path.dirname(os.path.abspath(__file__))
@@ -20,11 +21,14 @@ import output_similarity
 import semantic_similarity
 
 # model path configuration
-# modelPathName = "best_model.pth"
-modelPathName = "practice_model.pth"
+modelPathName = "ensemble_model.pth"
 
 # default model path
-defaultModelPath = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), modelPathName)
+defaultModelPath = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "models",
+    modelPathName,
+)
 
 
 # MLP ensemble model
@@ -36,7 +40,7 @@ class EnsembleMLP(nn.Module):
             nn.ReLU(),
             nn.Linear(hiddenSize, hiddenSize),
             nn.ReLU(),
-            nn.Linear(hiddenSize, outputSize)
+            nn.Linear(hiddenSize, outputSize),
         )
 
     def forward(self, x):
@@ -69,15 +73,15 @@ def computeSemanticSimilarityPair(code1, code2):
     )
 
     # convert torch tensors to numpy if needed
-    if hasattr(emb1, 'numpy'):
+    if hasattr(emb1, "numpy"):
         emb1 = emb1.numpy()
-    if hasattr(emb2, 'numpy'):
+    if hasattr(emb2, "numpy"):
         emb2 = emb2.numpy()
 
     sim = semantic_similarity.compute_semantic_similarity(emb1, emb2)
 
     # extract scalar from matrix if needed
-    if hasattr(sim, 'shape') and sim.ndim > 0:
+    if hasattr(sim, "shape") and sim.ndim > 0:
         sim = float(np.asarray(sim).flat[0])
 
     kw = semantic_similarity.keyword_overlap(code1, code2)
@@ -131,7 +135,7 @@ def analyze_pair(code1, code2, modelPath=None):
         )
 
     mlp = EnsembleMLP()
-    mlp.load_state_dict(torch.load(modelPath, map_location='cpu', weights_only=True))
+    mlp.load_state_dict(torch.load(modelPath, map_location="cpu", weights_only=True))
     mlp.eval()
     X = torch.FloatTensor(features)
     with torch.no_grad():
@@ -148,8 +152,8 @@ def compute_features_for_dataframe(df):
     features = np.zeros((n, 3), dtype=np.float32)
 
     for i in range(n):
-        code1 = df['code1'].iloc[i]
-        code2 = df['code2'].iloc[i]
+        code1 = df["code1"].iloc[i]
+        code2 = df["code2"].iloc[i]
 
         # token similarity
         try:
@@ -171,7 +175,7 @@ def compute_features_for_dataframe(df):
 
         features[i] = [tokenSim, semanticSim, outputSim]
 
-    y = df['similar'].astype(np.float32).to_numpy()
+    y = df["similar"].astype(np.float32).to_numpy()
     return features, y
 
 
@@ -194,7 +198,7 @@ def train_model(X, y, savePath=None, epochs=600, patience=10):
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
-    bestValLoss = float('inf')
+    bestValLoss = float("inf")
     patienceCount = 0
 
     for epoch in range(epochs):
@@ -225,10 +229,12 @@ def train_model(X, y, savePath=None, epochs=600, patience=10):
             break
 
         if epoch % 10 == 0:
-            print(f'Epoch {epoch}: Train Loss: {loss.item():.4f}, Val Loss: {valLoss.item():.4f}')
+            print(
+                f"Epoch {epoch}: Train Loss: {loss.item():.4f}, Val Loss: {valLoss.item():.4f}"
+            )
 
     # load best model
-    model.load_state_dict(torch.load(savePath, map_location='cpu', weights_only=True))
+    model.load_state_dict(torch.load(savePath, map_location="cpu", weights_only=True))
     print(f"Model saved to {savePath}")
     return model
 
@@ -245,7 +251,7 @@ def main():
 
     # find data file
     projectRoot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    dataPath = os.path.join(projectRoot, "csv_data", "sample_train.csv")
+    dataPath = os.path.join(projectRoot, "csv_data", "combined_scores.csv")
 
     if not os.path.exists(dataPath):
         print(f"Error: Data file not found at {dataPath}")
@@ -257,11 +263,30 @@ def main():
     df = df.head(argumentLimit)
     print(f"Using first {argumentLimit} samples")
 
-    df = df[['code1', 'code2', 'similar']].copy()
+    df = df[
+        [
+            "code1",
+            "code2",
+            "similar",
+            "output_similarity",
+            "token_similarity",
+            "semantic_similarity",
+        ]
+    ].copy()
 
-    X, y = compute_features_for_dataframe(df)
+    # X, y = compute_features_for_dataframe(df)
 
-    outputPath = args.output if args.output else defaultModelPath
+    # the combined scores into inputs and outputs
+    X = (
+        df[["output_similarity", "token_similarity", "semantic_similarity"]]
+        .astype(np.float32)
+        .to_numpy()
+    )
+    y = df["similar"].astype(np.float32).to_numpy()
+
+    # outputPath = args.output if args.output else defaultModelPath
+
+    outputPath = defaultModelPath
     train_model(X, y, savePath=outputPath)
 
 
