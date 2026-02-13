@@ -1,14 +1,14 @@
 # import necessary libraries
+import os
+import sys
+import threading
 import tkinter as tk
 from tkinter import scrolledtext
-import sys
-import os
-import threading
 
 # add parent directory and src directory to path for imports
 projectRoot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(projectRoot)
-sys.path.append(os.path.join(projectRoot, 'src'))
+sys.path.append(os.path.join(projectRoot, "src"))
 
 
 class CodebusterGUI:
@@ -41,7 +41,9 @@ class CodebusterGUI:
 
         # header frame
         self.headerFrame = tk.Frame(root, bg=self.bgColor, height=100)
-        self.headerFrame.grid(row=0, column=0, columnspan=2, sticky="ew", padx=0, pady=0)
+        self.headerFrame.grid(
+            row=0, column=0, columnspan=2, sticky="ew", padx=0, pady=0
+        )
 
         # title label
         self.titleLabel = tk.Label(
@@ -50,7 +52,7 @@ class CodebusterGUI:
             font=("Helvetica Neue", 86, "bold"),
             bg=self.bgColor,
             fg=self.accentColor,
-            pady=20
+            pady=20,
         )
         self.titleLabel.pack()
 
@@ -59,13 +61,15 @@ class CodebusterGUI:
             text="AI-Powered Code Similarity Detection",
             font=("Helvetica Neue", 13),
             bg=self.bgColor,
-            fg=self.textColor
+            fg=self.textColor,
         )
         self.subtitleLabel.pack(pady=(0, 15))
 
         # result frame
         self.resultFrame = tk.Frame(root, bg=self.bgColor, height=60)
-        self.resultFrame.grid(row=1, column=0, columnspan=2, sticky="ew", padx=20, pady=(10, 5))
+        self.resultFrame.grid(
+            row=1, column=0, columnspan=2, sticky="ew", padx=20, pady=(10, 5)
+        )
 
         self.resultLabel = tk.Label(
             self.resultFrame,
@@ -73,7 +77,7 @@ class CodebusterGUI:
             font=("Helvetica Neue", 16, "bold"),
             bg=self.bgColor,
             fg=self.textColor,
-            pady=10
+            pady=10,
         )
         self.resultLabel.pack()
 
@@ -82,7 +86,7 @@ class CodebusterGUI:
             text="",
             font=("Helvetica Neue", 11),
             bg=self.bgColor,
-            fg="#6c757d"
+            fg="#6c757d",
         )
         self.detailLabel.pack()
 
@@ -92,9 +96,7 @@ class CodebusterGUI:
 
         # custom button using Frame and Label for better color support on macOS
         self.buttonContainer = tk.Frame(
-            self.buttonFrame,
-            bg=self.accentColor,
-            cursor="hand2"
+            self.buttonFrame, bg=self.accentColor, cursor="hand2"
         )
         self.buttonContainer.pack()
 
@@ -106,7 +108,7 @@ class CodebusterGUI:
             fg="white",
             padx=40,
             pady=15,
-            cursor="hand2"
+            cursor="hand2",
         )
         self.checkButton.pack()
 
@@ -119,7 +121,9 @@ class CodebusterGUI:
 
         # left text box
         self.leftFrame = tk.Frame(root, bg=self.bgColor)
-        self.leftFrame.grid(row=3, column=0, sticky="nsew", padx=(20, 10), pady=(10, 20))
+        self.leftFrame.grid(
+            row=3, column=0, sticky="nsew", padx=(20, 10), pady=(10, 20)
+        )
         self.leftFrame.grid_rowconfigure(1, weight=1)
         self.leftFrame.grid_columnconfigure(0, weight=1)
 
@@ -128,7 +132,7 @@ class CodebusterGUI:
             text="Code Snippet 1",
             font=("Helvetica Neue", 14, "bold"),
             bg=self.bgColor,
-            fg=self.accentColor
+            fg=self.accentColor,
         )
         self.leftLabel.grid(row=0, column=0, pady=(0, 8))
 
@@ -149,13 +153,15 @@ class CodebusterGUI:
             relief=tk.SOLID,
             highlightthickness=1,
             highlightbackground="#dee2e6",
-            highlightcolor=self.accentColor
+            highlightcolor=self.accentColor,
         )
         self.leftText.grid(row=1, column=0, sticky="nsew")
 
         # right text box
         self.rightFrame = tk.Frame(root, bg=self.bgColor)
-        self.rightFrame.grid(row=3, column=1, sticky="nsew", padx=(10, 20), pady=(10, 20))
+        self.rightFrame.grid(
+            row=3, column=1, sticky="nsew", padx=(10, 20), pady=(10, 20)
+        )
         self.rightFrame.grid_rowconfigure(1, weight=1)
         self.rightFrame.grid_columnconfigure(0, weight=1)
 
@@ -164,7 +170,7 @@ class CodebusterGUI:
             text="Code Snippet 2",
             font=("Helvetica Neue", 14, "bold"),
             bg=self.bgColor,
-            fg=self.accentColor
+            fg=self.accentColor,
         )
         self.rightLabel.grid(row=0, column=0, pady=(0, 8))
 
@@ -185,7 +191,7 @@ class CodebusterGUI:
             relief=tk.SOLID,
             highlightthickness=1,
             highlightbackground="#dee2e6",
-            highlightcolor=self.accentColor
+            highlightcolor=self.accentColor,
         )
         self.rightText.grid(row=1, column=0, sticky="nsew")
 
@@ -237,12 +243,12 @@ class CodebusterGUI:
         if pred:
             self.resultLabel.config(
                 text=f"Similarity: {prob * 100:.1f}% — Likely Similar",
-                fg=self.errorColor
+                fg=self.errorColor,
             )
         else:
             self.resultLabel.config(
                 text=f"Similarity: {prob * 100:.1f}% — Likely Different",
-                fg=self.successColor
+                fg=self.successColor,
             )
 
         detail = (
@@ -258,10 +264,7 @@ class CodebusterGUI:
 
     # display an error from analysis
     def showError(self, errorMsg):
-        self.resultLabel.config(
-            text=f"Error: {errorMsg}",
-            fg=self.errorColor
-        )
+        self.resultLabel.config(text=f"Error: {errorMsg}", fg=self.errorColor)
         self.detailLabel.config(text="")
         self.resetButton()
 
@@ -276,14 +279,16 @@ class CodebusterGUI:
         self.resultLabel.config(
             text="Please enter code in both text boxes",
             fg=self.errorColor,
-            font=("Helvetica Neue", 14, "bold")
+            font=("Helvetica Neue", 14, "bold"),
         )
         self.detailLabel.config(text="")
 
     # run the ensemble model on two code snippets
     def runModel(self, code1, code2):
         from ensemble import analyze_pair
-        modelPath = "training_model.pth"
+
+        # Declare the trained model path
+        modelPath = "models/ensemble_model.pth"
 
         # use the default model path from ensemble module
         return analyze_pair(code1, code2, modelPath=modelPath)
