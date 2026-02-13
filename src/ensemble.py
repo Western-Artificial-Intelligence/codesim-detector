@@ -58,9 +58,8 @@ def computeOutputSimilarityPair(code1, code2):
     with tempfile.TemporaryDirectory() as tmpdir:
         fName1 = os.path.join(tmpdir, "prog_1.cpp")
         fName2 = os.path.join(tmpdir, "prog_2.cpp")
-        job = (fName1, fName2, code1, code2, 0)
-        result = output_similarity.run(job, tmpdir)
-        return result["output"]
+        result = output_similarity.run(fName1, fName2, code1, code2, tmpdir)
+        return result
 
 
 # compute semantic similarity for a single pair of code snippets
