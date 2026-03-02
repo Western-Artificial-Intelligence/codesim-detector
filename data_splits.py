@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -46,47 +47,67 @@ print('\nReloaded parquet, shape:', df.shape)
 print(df.head(5))
 
 
-# split the data into train and cross validation sets with 15% for cross validation
-trainData, crossValidationData = train_test_split(df, test_size=0.15, random_state=42)
-print('\nTrain size:', len(trainData), 'CV size:', len(crossValidationData))
+# split the merged labeled data into train/cv/test: 70% / 15% / 15%
+# (do this in two stages so CV and test are equal-sized)
+labels = df["similar"]
+
+trainData, tempData = train_test_split(
+    df,
+    test_size=0.30,
+    random_state=42,
+    stratify=labels,
+)
+crossValidationData, testData = train_test_split(
+    tempData,
+    test_size=0.50,
+    random_state=42,
+    stratify=tempData["similar"],
+)
+
+print(
+    "\nSplit sizes:",
+    "train=", len(trainData),
+    "cv=", len(crossValidationData),
+    "test=", len(testData),
+)
+
+# save splits to parquet
+trainData.to_parquet("data/train.parquet", engine="pyarrow", index=False)
+crossValidationData.to_parquet(
+    "data/cross_validation.parquet", engine="pyarrow", index=False
+)
+print("Saved train/cross-validation parquet files to data/.")
 
 
-# save train and cross validation to parquet
-trainData.to_parquet("data/train.parquet", engine='pyarrow', index=False)
-crossValidationData.to_parquet("data/cross_validation.parquet", engine='pyarrow', index=False)
-print("Saved train and cross-validation parquet files to data/.")
+# --- Build labeled evaluation test set ---
+# Start with the 15% held-out labeled split, then append generated labeled test pairs.
+test_labeled_parts = [testData]
 
-
-# get the test data from csv file
-csvTestDataPath = "csv_data/test.csv"
-if not Path(csvTestDataPath).exists():
-    raise FileNotFoundError(f"CSV test data file not found: {csvTestDataPath}")
-test_df = pd.read_csv(csvTestDataPath)
-
-# get the generated test data from csv file
 gen_csvTestDataPath = "csv_data/generated_pairs_test.csv"
-if not Path(gen_csvTestDataPath).exists():
-    raise FileNotFoundError(f"CSV test data file not found: {gen_csvTestDataPath}")
-gen_test_df = pd.read_csv(gen_csvTestDataPath)
+if Path(gen_csvTestDataPath).exists():
+    gen_test_df = pd.read_csv(gen_csvTestDataPath)
+    test_labeled_parts.append(gen_test_df[selected_cols])
+else:
+    raise FileNotFoundError(f"CSV generated test data file not found: {gen_csvTestDataPath}")
 
-# select columns for selected pairs present
-selected_test_cols = ['code1', 'code2']
-gen_test_df = gen_test_df[selected_test_cols]
-print('\nGenerated Test data shape:', gen_test_df.shape)
-print(test_df.head(5))
+testLabeledDf = pd.concat(test_labeled_parts, axis=0, ignore_index=True)
+print("\nFinal labeled test data shape:", testLabeledDf.shape)
 
-# Making sure that the columns for generated pairs are correct
-test_df = test_df[selected_test_cols]
-print('\nTest data shape:', test_df.shape)
-print(test_df.head(5))
+testLabeledParquetPath = "data/test.parquet"
+testLabeledDf.to_parquet(testLabeledParquetPath, engine="pyarrow", index=False)
+print(f"Saved labeled test parquet to: {testLabeledParquetPath}")
 
-# Merge the generated pairs and sample pairs
-test_df = pd.concat([test_df, gen_test_df], axis=0)
-print('\nFinal test data shape:', test_df.shape)
-print(test_df.head(5))
 
-# save test parquet
-testParquetFilePath = "data/test.parquet"
-test_df.to_parquet(testParquetFilePath, engine='pyarrow', index=False)
-print(f"Saved test parquet to: {testParquetFilePath}")
+# --- Optional: Build inference-style test set (code1, code2 only) ---
+# If you have an unlabeled csv_data/test.csv (e.g., for submission), save it separately
+# so it doesn't conflict with the labeled evaluation test set above.
+selected_test_cols = ["code1", "code2"]
+
+csvTestDataPath = "csv_data/test.csv"
+if Path(csvTestDataPath).exists():
+    test_df = pd.read_csv(csvTestDataPath)
+    test_infer_df = test_df[selected_test_cols].copy()
+    testInferParquetFilePath = "data/test_infer.parquet"
+    test_infer_df.to_parquet(testInferParquetFilePath, engine="pyarrow", index=False)
+    print(f"Saved inference test parquet to: {testInferParquetFilePath}")
 

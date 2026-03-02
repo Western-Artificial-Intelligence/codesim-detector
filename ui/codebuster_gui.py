@@ -288,7 +288,7 @@ class CodebusterGUI:
         from ensemble import analyze_pair
 
         # Declare the trained model path
-        modelPath = "models/ensemble_model.pth"
+        modelPath = "model/ensemble_model.pth"
 
         # use the default model path from ensemble module
         return analyze_pair(code1, code2, modelPath=modelPath)
