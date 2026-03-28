@@ -218,6 +218,7 @@ def train_model(
 
 
 def save_model(encoder, filepath="model/graphcodebert_mil_finetuned.pt"):
+    Path(filepath).parent.mkdir(parents=True, exist_ok=True)
     torch.save(encoder.state_dict(), filepath)
     print(f"Model saved to {filepath}")
 
@@ -367,7 +368,7 @@ def add_semantic_similarity_score_and_save(
                 print(f"Scored {i+1}/{len(df)} rows...")
 
     df_out = df.copy()
-    df_out["semantic_similarity"] = scores
+    df_out[score_col] = scores
 
     out_dir = os.path.dirname(output_csv_path)
     if out_dir:
@@ -379,7 +380,7 @@ def add_semantic_similarity_score_and_save(
     # If does exist add to an existing col
     else:
         new_df = pd.read_csv(output_csv_path)
-        new_df["semantic_similarity"] = df_out["semantic_similarity"]
+        new_df[score_col] = df_out[score_col]
         new_df.to_csv(output_csv_path, index=False)
 
     print(f"Saved scored dataframe to {output_csv_path}")
@@ -389,7 +390,8 @@ def add_semantic_similarity_score_and_save(
 
 if __name__ == "__main__":
 
-    train_df = pd.read_parquet("data/train.parquet")
+    train_df = pd.read_csv(Path("csv_data/test_combined_scores.csv"))
+    print("Loaded training data with shape:", train_df.shape)
     val_df = pd.read_parquet("data/cross_validation.parquet")
 
     language = get_language("cpp")
@@ -398,12 +400,12 @@ if __name__ == "__main__":
     tokenizer = RobertaTokenizer.from_pretrained("microsoft/graphcodebert-base")
 
     # true only if you want to train the model
-    want_to_train = True
+    want_to_train = False
 
     if want_to_train:  # Train the model
 
-        model_train_df = train_df.sample(n=1000, random_state=42)
-        model_val_df = val_df.sample(n=200, random_state=42)
+        model_train_df = train_df.sample(n=1500, random_state=42)
+        model_val_df = val_df.sample(n=300, random_state=42)
 
         trained_encoder, training_history = train_model(
             model_train_df,
@@ -426,15 +428,15 @@ if __name__ == "__main__":
         encoder=trained_encoder,
         tokenizer=tokenizer,
         parser=parser,
-        output_csv_path="csv_data/combined_scores.csv",
+        output_csv_path="csv_data/test_combined_scores.csv",
         device="cuda" if torch.cuda.is_available() else "cpu",
     )
 
-    get_evaluation_scores(
-        trained_encoder,
-        val_df,
-        tokenizer=tokenizer,
-        parser=parser,
-        device="cuda" if torch.cuda.is_available() else "cpu",
-        threshold=0.6,
-    )
+    # get_evaluation_scores(
+    #     trained_encoder,
+    #     val_df,
+    #     tokenizer=tokenizer,
+    #     parser=parser,
+    #     device="cuda" if torch.cuda.is_available() else "cpu",
+    #     threshold=0.6,
+    # )

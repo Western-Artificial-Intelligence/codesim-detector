@@ -336,18 +336,20 @@ def process(df: pd.DataFrame) -> pd.DataFrame:
 # Main
 if __name__ == "__main__":
     # Read from parquet
-    parquetFile = "data/train.parquet"
+    parquetFile = Path("csv_data/test_combined_scores.csv")
     if not Path.exists(parquetFile):
-        raise FileNotFoundError("Parquet File was not found")
+        raise FileNotFoundError("CSV File was not found")
 
-    df = pd.read_parquet(parquetFile)
+    df = pd.read_csv(parquetFile)
 
     # Save file for checkpoints
-    saveFile = "checkpoint.json"
-    if not Path.exists(stateSave):
+    saveFile = Path("checkpoint.json")
+    if not saveFile.exists():
         start = 0
     else:
         start = json.load(open(saveFile))["checkpoint"]
+
+    Path("checkpoints").mkdir(parents=True, exist_ok=True)
 
     checkpointSize = 50
 
@@ -378,9 +380,9 @@ if __name__ == "__main__":
 
     # Read all checkpoints into one df
     fullDf = pd.concat([pd.read_parquet(f) for f in sortedFiles])
-    output_csv = "csv_data/combined_scores.csv"
+    output_csv = Path("csv_data/test_combined_scores.csv")
     # Check if already exists
-    if not Path(output_csv).exists():
+    if not output_csv.exists():
         fullDf.to_csv(output_csv, index=False)
     # Add to existing
     else:
